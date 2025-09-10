@@ -234,7 +234,6 @@ func (repo *UserRepository) UpdateCommercialUser(userID uuid.UUID, signupInput *
 }
 
 func (repo *UserRepository) UpdateUserStatus(ctx context.Context, userID uuid.UUID, status string) (*model.CommercialUser, error) {
-	// Find the existing question by its ID
 	var user model.CommercialUser
 	if err := repo.DB.WithContext(ctx).First(&user, "id = ?", userID).Error; err != nil {
 		return nil, fmt.Errorf("user not found with ID: %s", userID)
@@ -257,5 +256,15 @@ func (repo *UserRepository) UpdateUserStatus(ctx context.Context, userID uuid.UU
 
 	return &updatedUser, nil
 }
+
+func (repo *UserRepository) FetchUser(userID uuid.UUID) (*model.CommercialUser, error) {
+    var user model.CommercialUser
+    if err := repo.DB.First(&user, "id = ?", userID).Error; err != nil {
+        return nil, fmt.Errorf("user not found: %v", err)
+    }
+    return &user, nil
+}
+
+// func (repo *UserRepository) BulkRegistration(ctx context.Context, ) (*model.CommercialUser, error) {}
 
 

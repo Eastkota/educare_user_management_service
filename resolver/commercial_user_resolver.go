@@ -184,12 +184,9 @@ func (ur *UserResolver) UpdateUserStatus(p graphql.ResolveParams) *model.Generic
 
 	status, ok := p.Args["status"].(string)
 	if !ok {
-		// A boolean argument is required, return an error if it's not present.
 		return helpers.FormatError(fmt.Errorf("User status is required and must be a boolean"))
 	}
 
-	// Call the service layer to perform the status update.
-	// Assuming the service layer has a corresponding method.
 	result, err := ur.Services.UpdateUserStatus(p.Context, userID, status)
 	if err != nil {
 		return helpers.FormatError(err)
@@ -204,96 +201,18 @@ func (ur *UserResolver) UpdateUserStatus(p graphql.ResolveParams) *model.Generic
 	}
 }
 
+func (ar *UserResolver) FetchUser(p graphql.ResolveParams) *model.GenericUserResponse {
+	userID := p.Args["user_id"].(uuid.UUID)
+	result, err := ar.Services.FetchUser(userID)
+	if err != nil {
+		return helpers.FormatError(err)
+	}
+	return &model.GenericUserResponse{
+		Data: &model.FetchSingleUserResult{
+			User: result,
+		},
+		Error: nil,
+	}
+}
 
-// func (ar *UserResolver) UpdatePassword(p graphql.ResolveParams) *model.GenericAuthResponse {
-// 	var updatePasswordInput model.UpdatePasswordInput
-// 	inputData := p.Args["input"].(map[string]interface{})
 
-// 	jsonData, err := json.Marshal(inputData)
-// 	if err != nil {
-// 		return helpers.FormatError(err)
-// 	}
-// 	err = json.Unmarshal(jsonData, &updatePasswordInput)
-// 	if err != nil {
-// 		return helpers.FormatError(err)
-// 	}
-// 	err = ar.Services.UpdatePassword(updatePasswordInput)
-// 	if err != nil {
-// 		return helpers.FormatError(err)
-// 	}
-// 	return &model.GenericAuthResponse{
-// 		Data: &model.GenericAuthSuccessData{
-// 			Message: "Password updated successfully",
-// 		},
-// 		Error: nil,
-// 	}
-// }
-// func (ar *UserResolver) UpdateSingleDataByID(p graphql.ResolveParams) *model.GenericAuthResponse {
-// 	// ctx := p.Context
-//     // user := ctx.Value(model.UserKey).(*model.User)
-// 	// if user == nil {
-// 	// 	return helpers.FormatError(fmt.Errorf("unauthorized"))
-// 	// }
-		
-// 	var updateSingleData model.UpdateSingleAuthDataInput
-// 	inputData := p.Args["input"].(map[string]interface{})
-
-// 	jsonData, err := json.Marshal(inputData)
-// 	if err != nil {
-// 		return helpers.FormatError(err)
-// 	}
-// 	err = json.Unmarshal(jsonData, &updateSingleData)
-// 	if err != nil {
-// 		return helpers.FormatError(err)
-// 	}
-// 	userID := uuid.MustParse("f81c3b55-d7a5-42ef-9f12-1d05dea507c6")//user.ID.String() /// TODO 
-// 	//Implement  the login to fetch user form Authorization
-// 	result, err := ar.Services.UpdateSingleDataByID(userID, updateSingleData)
-// 	if err != nil {
-// 		return helpers.FormatError(err)
-// 	}
-// 	return &model.GenericAuthResponse{
-// 		Data: &model.UserResult{
-// 			User: result,
-// 		},
-// 		Error: nil,
-// 	}
-// }
-
-// func (ar *UserResolver) FetchUser(p graphql.ResolveParams) *model.GenericAuthResponse {
-// 	userID := p.Args["user_id"].(uuid.UUID)
-// 	result, err := ar.Services.FetchUser(userID)
-// 	if err != nil {
-// 		return helpers.FormatError(err)
-// 	}
-// 	return &model.GenericAuthResponse{
-// 		Data: &model.UserResult{
-// 			User: result,
-// 		},
-// 		Error: nil,
-// 	}
-// }
-
-// func (ar *UserResolver) ResetPassword(p graphql.ResolveParams) *model.GenericAuthResponse {
-// 	var resetPasswordInput model.ResetPasswordInput
-// 	inputData := p.Args["input"].(map[string]interface{})
-
-// 	jsonData, err := json.Marshal(inputData)
-// 	if err != nil {
-// 		return helpers.FormatError(err)
-// 	}
-// 	err = json.Unmarshal(jsonData, &resetPasswordInput)
-// 	if err != nil {
-// 		return helpers.FormatError(err)
-// 	}
-// 	err = ar.Services.ResetPassword(resetPasswordInput)
-// 	if err != nil {
-// 		return helpers.FormatError(err)
-// 	}
-// 	return &model.GenericAuthResponse{
-// 		Data: &model.GenericAuthSuccessData{
-// 			Message: "Password updated successfully",
-// 		},
-// 		Error: nil,
-// 	}
-// }

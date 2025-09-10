@@ -68,3 +68,7 @@ func (as *UserService) FetchProfileByUserId(ctx context.Context, userID uuid.UUI
 func (vs *UserService) UpdateUserStatus(ctx context.Context, userID uuid.UUID, status string) (*model.CommercialUser, error) {
 	return vs.Repository.UpdateUserStatus(ctx, userID, status)
 }
+
+func (vs *UserService) FetchUser(userID uuid.UUID) (*model.CommercialUser, error) {
+	return vs.Repository.FetchUser(userID)
+}

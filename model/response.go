@@ -17,6 +17,9 @@ type CreateUserSuccessData struct {
 type DeleteUserResult struct {
     User       *CommercialUser              `json:"user"`
 }
+type FetchSingleUserResult struct {
+    User       *CommercialUser              `json:"user"`
+}
 
 type GenericUserResponse struct {
 	Data  interface{}

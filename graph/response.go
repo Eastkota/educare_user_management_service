@@ -58,3 +58,4 @@ var UserStatusResponse = graphql.NewObject(graphql.ObjectConfig{
 	},
 })
 
+

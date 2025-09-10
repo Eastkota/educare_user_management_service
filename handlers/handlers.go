@@ -6,7 +6,6 @@ import (
 	"context"
 	"encoding/json"
 	"net/http"
-	"fmt"
 
 	"github.com/graphql-go/graphql"
 	"github.com/labstack/echo/v4"
@@ -36,7 +35,6 @@ func Handler(ctx echo.Context) error {
 	}
 
 	result := executeQuery(ctx.Request().Context(), query, variables)
-	fmt.Println("result",result)
 
 	if result == nil {
         // Handle the error appropriately, e.g., return a 500 status code.
@@ -54,7 +52,6 @@ func Handler(ctx echo.Context) error {
 
 func executeQuery(ctx context.Context, query string, variables map[string]interface{}) *graphql.Result {
 	authSchema, err := schema.GetSchema()
-	fmt.Println("authSchema :", authSchema)
 	if err != nil {
 		return nil
 	}
