@@ -15,7 +15,6 @@ const (
 
 type CommercialUser struct {
     ID             uuid.UUID `gorm:"type:uuid;primaryKey" json:"id"`
-    Name           string    `gorm:"type:varchar(100);not null" json:"name"`
     UserIdentifier string    `gorm:"type:varchar(32);unique;not null" json:"user_identifier"`
     Email          string    `gorm:"type:varchar(100);unique" json:"email"`
     MobileNo       string    `gorm:"type:varchar(20);unique" json:"mobile_no"`
@@ -43,7 +42,6 @@ type UserProfile struct {
     ProfilePicture          string    `gorm:"type:varchar(255)" json:"profile_picture"`
     Gender                  string    `gorm:"type:char(1)" json:"gender"`
     UserId                  uuid.UUID `gorm:"type:uuid" json:"user_id"`
-    FavoriteVideoPlaylistId uuid.UUID    `gorm:"type:uuid" json:"favorite_video_playlist_id"`
     CreatedAt               time.Time `json:"created_at"`
     UpdatedAt               time.Time `json:"updated_at"`
 }

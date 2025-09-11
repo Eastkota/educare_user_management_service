@@ -60,9 +60,6 @@ func (repo *UserRepository) CreateCommercialUser(signupInput *model.SignupInput)
             return fmt.Errorf("failed to hash password: %v", err)
         }
 
-        // First, check for an existing user by mobile number or email.
-        // NOTE: This check should also be part of the transaction to prevent race conditions.
-        // The current implementation is simplified for this example.
         if signupInput.MobileNo != "" {
             user, _ = repo.FetchUserByLoginID("mobile_no", signupInput.MobileNo)
             if user == nil && signupInput.Email != "" {
@@ -70,7 +67,6 @@ func (repo *UserRepository) CreateCommercialUser(signupInput *model.SignupInput)
             }
         }
 
-        // If a user is found, update their record.
         if user != nil {
             updateData := map[string]interface{}{
                 "mobile_no":       signupInput.MobileNo,
@@ -83,15 +79,11 @@ func (repo *UserRepository) CreateCommercialUser(signupInput *model.SignupInput)
             if err := tx.Model(user).Updates(updateData).Error; err != nil {
                 return fmt.Errorf("failed to update user data: %v", err)
             }
-            // Note: If you want to return the user's profile on update,
-            // you'll need to fetch it here.
             return nil
         }
 
-        // If no user is found, create a new user and their profile.
         newUser := model.CommercialUser{
             ID:             uuid.New(),
-            Name:           signupInput.Name,
             MobileNo:       signupInput.MobileNo,
             Email:          signupInput.Email,
             UserIdentifier: identifier,
@@ -111,7 +103,6 @@ func (repo *UserRepository) CreateCommercialUser(signupInput *model.SignupInput)
             Gender: signupInput.Gender,
             Name:   signupInput.Name,
         }
-        // Pass the transaction 'tx' to the CreateUserProfile function.
         userProfile, err = repo.CreateUserProfile(tx, profileInput)
         if err != nil {
             return fmt.Errorf("failed to create user profile: %v", err)
@@ -136,24 +127,11 @@ func (repo *UserRepository) CreateUserProfile(tx *gorm.DB, inputData model.UserP
         UserId:         inputData.UserId,
     }
 
-    // Use the passed-in transaction object for all database operations.
     if err := tx.Create(&userProfile).Error; err != nil {
         return nil, fmt.Errorf("failed to insert user profile: %v", err)
     }
 
-    favoritePlaylist := model.UserVideoPlaylist{
-        ID:        uuid.New(),
-        Name:      "Favorites",
-        Favorites: true,
-        ProfileId: userProfile.ID,
-    }
 
-    if err := tx.Create(&favoritePlaylist).Error; err != nil {
-        return nil, fmt.Errorf("failed to create favorite playlist: %v", err)
-    }
-
-    userProfile.FavoriteVideoPlaylistId = favoritePlaylist.ID
-    // Use the passed-in transaction object.
     if err := tx.Save(&userProfile).Error; err != nil {
         return nil, fmt.Errorf("failed to update user profile with playlist ID: %v", err)
     }

@@ -28,7 +28,6 @@ var UserProfile = graphql.NewObject(graphql.ObjectConfig{
 		"id":                         &graphql.Field{Type: scalar.UUID},
 		"name":                       &graphql.Field{Type: graphql.String},
 		"profile_picture":            &graphql.Field{Type: graphql.String},
-		"favorite_video_playlist_id": &graphql.Field{Type: scalar.UUID},
 		"gender":                     &graphql.Field{Type: graphql.String},
 		"created_at":                 &graphql.Field{Type: scalar.Time},
 		"updated_at":                 &graphql.Field{Type: scalar.Time},
