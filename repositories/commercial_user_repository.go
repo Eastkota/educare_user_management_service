@@ -265,6 +265,10 @@ func (repo *UserRepository) FetchUser(userID uuid.UUID) (*model.CommercialUser, 
     return &user, nil
 }
 
-// func (repo *UserRepository) BulkRegistration(ctx context.Context, ) (*model.CommercialUser, error) {}
-
-
+func (repo *UserRepository) FetchAllUsers() ([]model.CommercialUser, error) {
+    var users []model.CommercialUser
+    if err := repo.DB.Find(&users).Error; err != nil {
+            return nil, fmt.Errorf("failed to fetch users: %v", err) 
+    }
+    return users, nil
+}

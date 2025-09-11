@@ -29,3 +29,5 @@ type GenericUserResponse struct {
 type UserProfileResult struct {
 	UserProfile *UserProfile `json:"user_profile"`
 }
+
+

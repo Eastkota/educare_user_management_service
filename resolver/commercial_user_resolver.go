@@ -215,4 +215,17 @@ func (ar *UserResolver) FetchUser(p graphql.ResolveParams) *model.GenericUserRes
 	}
 }
 
+func (ar *UserResolver) FetchAllUsers(p graphql.ResolveParams) *model.GenericUserResponse {
+    result, err := ar.Services.FetchAllUsers()
+    if err != nil {
+        return helpers.FormatError(err)
+    }
+    return &model.GenericUserResponse{
+        Data: &model.FetchAllUsersResult{
+            Users: result,
+        },
+        Error: nil,
+    }
+}
+
 

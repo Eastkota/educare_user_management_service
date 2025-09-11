@@ -33,6 +33,10 @@ type UserResult struct {
     CommercialUser *CommercialUser `json:"user"`
 }
 
+type FetchAllUsersResult struct {
+    Users []CommercialUser `json:"user"`
+}
+
 type UserProfile struct {
     ID                      uuid.UUID `gorm:"type:uuid;primaryKey" json:"id"`
     Name                    string    `gorm:"type:varchar(100)" json:"name"`

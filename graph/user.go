@@ -84,3 +84,14 @@ var CommercialUserStatus = graphql.NewObject(graphql.ObjectConfig{
 		"user":       &graphql.Field{Type: User},
 	},
 })
+
+var FetchAllUsersResult = graphql.NewObject(
+    graphql.ObjectConfig{
+        Name: "FetchAllUsersResult",
+        Fields: graphql.Fields{
+            "users": &graphql.Field{
+                Type: graphql.NewList(User),
+            },
+        },
+    },
+)

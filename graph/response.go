@@ -3,14 +3,6 @@ package schema
 import "github.com/graphql-go/graphql"
 
 
-var GenericAuthResponse = graphql.NewObject(graphql.ObjectConfig{
-	Name: "GenericAuthResponse",
-	Fields: graphql.Fields{
-		"data":  &graphql.Field{Type: AuthGenericSuccessData},
-		"error": &graphql.Field{Type: AuthError},
-	},
-})
-
 var CheckForExistingUserResponse = graphql.NewObject(graphql.ObjectConfig{
 	Name: "CheckForExistingUserResponse",
 	Fields: graphql.Fields{
@@ -23,6 +15,13 @@ var SingleUserResponse = graphql.NewObject(graphql.ObjectConfig{
 	Name: "SingleUserResponse",
 	Fields: graphql.Fields{
 		"data":  &graphql.Field{Type: UserResult},
+		"error": &graphql.Field{Type: AuthError},
+	},
+})
+var UsersResponse = graphql.NewObject(graphql.ObjectConfig{
+	Name: "UsersResponse",
+	Fields: graphql.Fields{
+		"data":  &graphql.Field{Type: FetchAllUsersResult},
 		"error": &graphql.Field{Type: AuthError},
 	},
 })
