@@ -252,7 +252,6 @@ func (repo *UserRepository) FetchAllUsers() ([]model.CommercialUser, error) {
 }
 
 func (repo *UserRepository) ResetPassword(userID uuid.UUID, newPassword string) error {
-    // Hash the new password.
     hashedPassword, err := helpers.EncryptPassword(newPassword)
     if err != nil {
         return fmt.Errorf("failed to hash new password: %w", err)
