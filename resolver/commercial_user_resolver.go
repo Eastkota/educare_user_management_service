@@ -86,33 +86,25 @@ func (ur *UserResolver) CreateUserProfile(p graphql.ResolveParams) *model.Generi
     if err != nil {
         return helpers.FormatError(err)
     }
-
-    // Get the database connection from the context or a global variable.
-    // Assuming 'ur.DB' holds the GORM database instance.
     db, err := helpers.GetGormDB()
 
-    // Start a new transaction.
     tx := db.Begin()
     if tx.Error != nil {
         return helpers.FormatError(tx.Error)
     }
 
-    // Defer a rollback in case of an error.
-    // If the function returns successfully, the commit will prevent this.
     defer func() {
         if r := recover(); r != nil {
             tx.Rollback()
         }
     }()
 
-    // Pass the transaction 'tx' to the service layer.
     result, err := ur.Services.CreateUserProfile(userProfileInput, tx)
     if err != nil {
-        tx.Rollback() // Roll back the transaction on error.
+        tx.Rollback()
         return helpers.FormatError(err)
     }
 
-    // Commit the transaction if everything was successful.
     if err := tx.Commit().Error; err != nil {
         return helpers.FormatError(err)
     }
@@ -176,7 +168,6 @@ func (ur *UserResolver) UpdateCommercialUser(p graphql.ResolveParams) *model.Gen
 }
 
 func (ur *UserResolver) UpdateUserStatus(p graphql.ResolveParams) *model.GenericUserResponse {
-	// Extract the question ID and the new 'is_published' status from the GraphQL arguments.
 	userID, ok := p.Args["userID"].(uuid.UUID)
 	if !ok || userID == uuid.Nil {
 		return helpers.FormatError(fmt.Errorf("userID is required"))
@@ -192,7 +183,6 @@ func (ur *UserResolver) UpdateUserStatus(p graphql.ResolveParams) *model.Generic
 		return helpers.FormatError(err)
 	}
 
-	// Format the successful response.
 	return &model.GenericUserResponse{
 		Data: &model.DeleteUserResult{
 			User: result,
@@ -226,6 +216,22 @@ func (ar *UserResolver) FetchAllUsers(p graphql.ResolveParams) *model.GenericUse
         },
         Error: nil,
     }
+}
+
+func (ar *UserResolver) ResetPassword(p graphql.ResolveParams) *model.GenericUserResponse {
+	userID := p.Args["user_id"].(uuid.UUID)
+	password := p.Args["password"].(string)
+	confirmPassword := p.Args["confirm_password"].(string)
+	err := ar.Services.ResetPassword(userID, password, confirmPassword)
+	if err != nil {
+		return helpers.FormatError(err)
+	}
+	return &model.GenericUserResponse{
+		Data: &model.GenericAuthSuccessData{
+			Message: "Password updated successfully",
+		},
+		Error: nil,
+	}
 }
 
 

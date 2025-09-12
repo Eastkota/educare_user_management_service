@@ -250,3 +250,30 @@ func (repo *UserRepository) FetchAllUsers() ([]model.CommercialUser, error) {
     }
     return users, nil
 }
+
+func (repo *UserRepository) ResetPassword(userID uuid.UUID, newPassword string) error {
+    // Hash the new password.
+    hashedPassword, err := helpers.EncryptPassword(newPassword)
+    if err != nil {
+        return fmt.Errorf("failed to hash new password: %w", err)
+    }
+
+    // Update only the password and updated_at fields for the specified user.
+    result := repo.DB.Model(&model.CommercialUser{}).
+        Where("id = ?", userID).
+        Updates(map[string]interface{}{
+            "password":   hashedPassword,
+            "updated_at": time.Now(),
+        })
+
+    if result.Error != nil {
+        return fmt.Errorf("failed to update user password: %w", result.Error)
+    }
+
+    // Check if a user was actually updated.
+    if result.RowsAffected == 0 {
+        return fmt.Errorf("user with ID %s not found", userID)
+    }
+
+    return nil
+}

@@ -61,39 +61,23 @@ func NewMutationType(resolver *resolvers.UserResolver) *graphql.Object {
 					return resolver.UpdateUserStatus(p), nil
 				},
 			},
-			// "updatePassword": &graphql.Field{
-			// 	Type: GenericAuthResponse,
-			// 	Args: graphql.FieldConfigArgument{
-			// 		"input": &graphql.ArgumentConfig{
-			// 			Type: UpdatePasswordInput,
-			// 		},
-			// 	},
-			// 	Resolve: func(p graphql.ResolveParams) (interface{}, error) {
-			// 		return resolver.UpdatePassword(p), nil
-			// 	},
-			// },
-			// "resetPassword": &graphql.Field{
-			// 	Type: GenericAuthResponse,
-			// 	Args: graphql.FieldConfigArgument{
-			// 		"input": &graphql.ArgumentConfig{
-			// 			Type: ResetPasswordInput,
-			// 		},
-			// 	},
-			// 	Resolve: func(p graphql.ResolveParams) (interface{}, error) {
-			// 		return resolver.ResetPassword(p), nil
-			// 	},
-			// },
-			// "updateSingleUserDataById": &graphql.Field{
-			// 	Type: SingleUserResponse,
-			// 	Args: graphql.FieldConfigArgument{
-			// 		"input": &graphql.ArgumentConfig{
-			// 			Type: UpdateSingleAuthDataInput,
-			// 		},
-			// 	},
-			// 	Resolve: func(p graphql.ResolveParams) (interface{}, error) {
-			// 		return resolver.UpdateSingleDataByID(p), nil
-			// 	},
-			// },
+			"resetPassword": &graphql.Field{
+				Type: GenericUserResponse,
+				Args: graphql.FieldConfigArgument{
+					"user_id": &graphql.ArgumentConfig{
+						Type: graphql.NewNonNull(scalar.UUID),
+					},
+					"password": &graphql.ArgumentConfig{
+						Type: graphql.NewNonNull(graphql.String),
+					},
+					"confirm_password": &graphql.ArgumentConfig{
+						Type: graphql.NewNonNull(graphql.String),
+					},
+				},
+				Resolve: func(p graphql.ResolveParams) (interface{}, error) {
+					return resolver.ResetPassword(p), nil
+				},
+			},
 		},
 	})
 }

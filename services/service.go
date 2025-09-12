@@ -15,6 +15,7 @@ type Services interface {
 	CreateUserProfile(inputData model.UserProfileInput, tx *gorm.DB) (*model.UserProfile, error)
 	UpdateCommercialUser(userID uuid.UUID, signupInput *model.SignupInput) (*model.CommercialUser, *model.UserProfile, error)
 	UpdateUserStatus(ctx context.Context, userID uuid.UUID, status string) (*model.CommercialUser, error)
+	ResetPassword(userID uuid.UUID, password, confirmPassword string) (error)
 
 	FetchUser(userId uuid.UUID) (*model.CommercialUser, error)
 	FetchProfileByUserId(ctx context.Context, userID uuid.UUID) (*model.UserProfile, error)

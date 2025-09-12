@@ -76,3 +76,24 @@ func (vs *UserService) FetchUser(userID uuid.UUID) (*model.CommercialUser, error
 func (vs *UserService) FetchAllUsers() ([]model.CommercialUser, error) {
     return vs.Repository.FetchAllUsers()
 }
+
+
+func (vs *UserService) ResetPassword(userID uuid.UUID, password, confirmPassword string) error {
+    if password == "" || confirmPassword == "" {
+        return fmt.Errorf("new password and confirm password cannot be empty")
+    }
+    if password != confirmPassword {
+        return fmt.Errorf("new password and confirm password do not match")
+    }
+
+    // Call the new, dedicated repository function.
+    // The repository handles the hashing and database logic.
+    err := vs.Repository.ResetPassword(userID, password)
+    if err != nil {
+        return fmt.Errorf("failed to reset password: %v", err)
+    }
+
+    return nil
+}
+
+
