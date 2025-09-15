@@ -29,7 +29,7 @@ func NewQueryType(resolver *resolvers.UserResolver) *graphql.Object {
 					return serviceInfo, nil
 				},
 			},
-			"checkForExistingUser": &graphql.Field{
+			"checkForExistingCommercialUser": &graphql.Field{
 				Type: CheckForExistingUserResponse,
 				Args: graphql.FieldConfigArgument{
 					"field": &graphql.ArgumentConfig{
@@ -43,7 +43,7 @@ func NewQueryType(resolver *resolvers.UserResolver) *graphql.Object {
 					return resolver.CheckForExistingUser(p), nil
 				},
 			},
-			"fetchProfileByUserId": &graphql.Field{
+			"fetchProfileByCommercialUserId": &graphql.Field{
 				Type: UserProfileResponse,
 				Args: graphql.FieldConfigArgument{
 					"user_id": &graphql.ArgumentConfig{
@@ -65,7 +65,7 @@ func NewQueryType(resolver *resolvers.UserResolver) *graphql.Object {
 					return resolver.FetchUser(p), nil
 				},
 			},
-			"fetchAllUsers": &graphql.Field{
+			"fetchAllCommercialUsers": &graphql.Field{
 				Type: UsersResponse,
 				Resolve: func(p graphql.ResolveParams) (interface{}, error) {
 					return resolver.FetchAllUsers(p), nil
