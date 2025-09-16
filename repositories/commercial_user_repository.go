@@ -166,18 +166,16 @@ func (repo *UserRepository) UpdateCommercialUser(userID uuid.UUID, signupInput *
             return fmt.Errorf("failed to fetch user for update: %w", err)
         }
 
-        // Step 2: Prepare the update data.
+        // Step 2: Prepare the update data for user.
         hashedPassword, err := helpers.EncryptPassword(signupInput.Password)
         if err != nil {
             return fmt.Errorf("failed to hash password: %w", err)
         }
 
         updateData := map[string]interface{}{
-            "name":       signupInput.Name,
             "password":   hashedPassword,
             "updated_at": time.Now(),
         }
-        
         if signupInput.MobileNo != "" {
             updateData["mobile_no"] = signupInput.MobileNo
         }
@@ -189,11 +187,27 @@ func (repo *UserRepository) UpdateCommercialUser(userID uuid.UUID, signupInput *
             return fmt.Errorf("failed to update user data: %w", err)
         }
 
-        // The 'user' variable is from the tx.First call, so we can use its ID.
-        userProfile, err = repo.FetchProfileByUserId(context.Background(), user.ID)
-        if err != nil {
-            return fmt.Errorf("failed to fetch user profile after update: %w", err)
+        // --- Update the user profile as well ---
+        var profile model.UserProfile
+        if err := tx.Where("user_id = ?", userID).First(&profile).Error; err != nil {
+            return fmt.Errorf("failed to fetch user profile for update: %w", err)
         }
+
+        profileUpdate := map[string]interface{}{
+            "updated_at": time.Now(),
+        }
+        if signupInput.Name != "" {
+            profileUpdate["name"] = signupInput.Name
+        }
+        if signupInput.Gender != "" {
+            profileUpdate["gender"] = signupInput.Gender
+        }
+
+        if err := tx.Model(&model.UserProfile{}).Where("user_id = ?", userID).Updates(profileUpdate).Error; err != nil {
+            return fmt.Errorf("failed to update user profile: %w", err)
+        }
+
+        userProfile = &profile
 
         return nil
     })
@@ -202,10 +216,15 @@ func (repo *UserRepository) UpdateCommercialUser(userID uuid.UUID, signupInput *
         return nil, nil, err
     }
 
-
     var updatedUser model.CommercialUser
     if err := repo.DB.First(&updatedUser, "id = ?", userID).Error; err != nil {
         return nil, nil, fmt.Errorf("failed to re-fetch updated user: %w", err)
+    }
+
+    // Re-fetch the updated profile
+    userProfile, err = repo.FetchProfileByUserId(context.Background(), userID)
+    if err != nil {
+        return nil, nil, fmt.Errorf("failed to re-fetch updated user profile: %w", err)
     }
 
     return &updatedUser, userProfile, nil
@@ -242,6 +261,16 @@ func (repo *UserRepository) FetchUser(userID uuid.UUID) (*model.CommercialUser, 
     }
     return &user, nil
 }
+
+func (repo *UserRepository) FetchAllActiveUsers() ([]model.CommercialUser, error) {
+    var users []model.CommercialUser
+    if err := repo.DB.Where("status = ?", "Active").Find(&users).Error; err != nil {
+        return nil, fmt.Errorf("failed to fetch active users: %v", err)
+    }
+    return users, nil
+}
+
+
 
 func (repo *UserRepository) FetchAllUsers() ([]model.CommercialUser, error) {
     var users []model.CommercialUser

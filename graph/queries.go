@@ -71,6 +71,12 @@ func NewQueryType(resolver *resolvers.UserResolver) *graphql.Object {
 					return resolver.FetchAllUsers(p), nil
 				},
 			},
+			"fetchAllActiveUsers": &graphql.Field{
+				Type: UsersResponse,
+				Resolve: func(p graphql.ResolveParams) (interface{}, error) {
+					return resolver.FetchAllActiveUsers(p), nil
+				},
+			},
 		},
 	})
 }

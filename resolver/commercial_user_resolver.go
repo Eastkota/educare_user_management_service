@@ -218,6 +218,19 @@ func (ar *UserResolver) FetchAllUsers(p graphql.ResolveParams) *model.GenericUse
     }
 }
 
+func (ar *UserResolver) FetchAllActiveUsers(p graphql.ResolveParams) *model.GenericUserResponse {
+    result, err := ar.Services.FetchAllActiveUsers()
+    if err != nil {
+        return helpers.FormatError(err)
+    }
+    return &model.GenericUserResponse{
+        Data: &model.FetchAllActiveUsersResult{
+            Users: result,
+        },
+        Error: nil,
+    }
+}
+
 func (ar *UserResolver) ResetPassword(p graphql.ResolveParams) *model.GenericUserResponse {
 	userID := p.Args["user_id"].(uuid.UUID)
 	password := p.Args["password"].(string)

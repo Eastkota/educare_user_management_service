@@ -22,4 +22,5 @@ type Repository interface {
 	FetchProfileByUserId(ctx context.Context, userId uuid.UUID) (*model.UserProfile, error)
 	FetchUserByLoginID(field, value string) (*model.CommercialUser, error)
 	FetchAllUsers() ([]model.CommercialUser, error)
+	FetchAllActiveUsers() ([]model.CommercialUser, error)
 }

@@ -20,4 +20,5 @@ type Services interface {
 	FetchUser(userId uuid.UUID) (*model.CommercialUser, error)
 	FetchProfileByUserId(ctx context.Context, userID uuid.UUID) (*model.UserProfile, error)
 	FetchAllUsers() ([]model.CommercialUser, error)
+	FetchAllActiveUsers() ([]model.CommercialUser, error)
 }

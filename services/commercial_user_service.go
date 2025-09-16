@@ -77,6 +77,10 @@ func (vs *UserService) FetchAllUsers() ([]model.CommercialUser, error) {
     return vs.Repository.FetchAllUsers()
 }
 
+func (vs *UserService) FetchAllActiveUsers() ([]model.CommercialUser, error) {
+	return vs.Repository.FetchAllActiveUsers()
+}
+
 
 func (vs *UserService) ResetPassword(userID uuid.UUID, password, confirmPassword string) error {
     if password == "" || confirmPassword == "" {

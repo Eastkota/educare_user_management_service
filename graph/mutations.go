@@ -47,7 +47,7 @@ func NewMutationType(resolver *resolvers.UserResolver) *graphql.Object {
 					return resolver.UpdateCommercialUser(p), nil
 				},
 			},
-			"updateUserStatus" : &graphql.Field{
+			"updateCommercialUserStatus" : &graphql.Field{
 				Type: UserStatusResponse,
 				Args: graphql.FieldConfigArgument{
 					"userID": &graphql.ArgumentConfig{
@@ -61,7 +61,7 @@ func NewMutationType(resolver *resolvers.UserResolver) *graphql.Object {
 					return resolver.UpdateUserStatus(p), nil
 				},
 			},
-			"resetPassword": &graphql.Field{
+			"resetCommercialPassword": &graphql.Field{
 				Type: GenericUserResponse,
 				Args: graphql.FieldConfigArgument{
 					"user_id": &graphql.ArgumentConfig{

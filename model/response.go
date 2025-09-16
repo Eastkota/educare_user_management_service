@@ -20,6 +20,9 @@ type DeleteUserResult struct {
 type FetchSingleUserResult struct {
     User       *CommercialUser              `json:"user"`
 }
+type FetchAllActiveUsersResult struct {
+    Users       []CommercialUser              `json:"users"`
+}
 
 type GenericUserResponse struct {
 	Data  interface{}
