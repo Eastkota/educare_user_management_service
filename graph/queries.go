@@ -71,13 +71,13 @@ func NewQueryType(resolver *resolvers.UserResolver) *graphql.Object {
 					return resolver.FetchAllUsers(p), nil
 				},
 			},
-			"fetchAllActiveUsers": &graphql.Field{
+			"fetchAllActiveCommercialUsers": &graphql.Field{
 				Type: UsersResponse,
 				Resolve: func(p graphql.ResolveParams) (interface{}, error) {
 					return resolver.FetchAllActiveUsers(p), nil
 				},
 			},
-			"fetchNewRegister": &graphql.Field{
+			"fetchCommercialNewRegister": &graphql.Field{
 				Type: UsersResponse,
 				Args: graphql.FieldConfigArgument{
 					"from_date": &graphql.ArgumentConfig{
