@@ -77,6 +77,20 @@ func NewQueryType(resolver *resolvers.UserResolver) *graphql.Object {
 					return resolver.FetchAllActiveUsers(p), nil
 				},
 			},
+			"fetchNewRegister": &graphql.Field{
+				Type: UsersResponse,
+				Args: graphql.FieldConfigArgument{
+					"from_date": &graphql.ArgumentConfig{
+						Type: scalar.Time,
+					},
+					"to_date": &graphql.ArgumentConfig{
+						Type: scalar.Time,
+					},
+				},
+				Resolve: func(p graphql.ResolveParams) (interface{}, error) {
+					return resolver.FetchNewRegister(p), nil
+				},
+			},
 		},
 	})
 }

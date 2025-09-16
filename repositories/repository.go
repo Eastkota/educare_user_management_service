@@ -4,6 +4,7 @@ import (
 	"user_management_service/model"
 
 	"context"
+	"time"
 
 	"gorm.io/gorm"
 	"github.com/google/uuid"
@@ -23,4 +24,5 @@ type Repository interface {
 	FetchUserByLoginID(field, value string) (*model.CommercialUser, error)
 	FetchAllUsers() ([]model.CommercialUser, error)
 	FetchAllActiveUsers() ([]model.CommercialUser, error)
+	FetchNewRegister(from_date, to_date time.Time) ([]model.CommercialUser, error)
 }

@@ -305,3 +305,11 @@ func (repo *UserRepository) ResetPassword(userID uuid.UUID, newPassword string) 
 
     return nil
 }
+
+func (repo *UserRepository) FetchNewRegister(from_date, to_date time.Time) ([]model.CommercialUser, error) {
+    var users []model.CommercialUser
+    if err := repo.DB.Where("created_at BETWEEN ? AND ?", from_date, to_date).Find(&users).Error; err != nil {
+        return nil, fmt.Errorf("failed to fetch new registrations: %v", err)
+    }
+    return users, nil
+}

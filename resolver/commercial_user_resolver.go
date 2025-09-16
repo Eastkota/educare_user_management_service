@@ -7,6 +7,7 @@ import (
 
 	"encoding/json"
 	"fmt"
+	"time"
 
 	"github.com/graphql-go/graphql"
 	"github.com/google/uuid"
@@ -247,4 +248,25 @@ func (ar *UserResolver) ResetPassword(p graphql.ResolveParams) *model.GenericUse
 	}
 }
 
+func (ar *UserResolver) FetchNewRegister(p graphql.ResolveParams) *model.GenericUserResponse {
+	fromDate, ok := p.Args["from_date"].(time.Time)
+	if !ok {
+		return helpers.FormatError(fmt.Errorf("from_date argument is not a valid time.Time type"))
+	}
 
+	toDate, ok := p.Args["to_date"].(time.Time)
+	if !ok {
+		return helpers.FormatError(fmt.Errorf("to_date argument is not a valid time.Time type"))
+	}
+
+	result, err := ar.Services.FetchNewRegister(fromDate, toDate)
+	if err != nil {
+		return helpers.FormatError(err)
+	}
+	return &model.GenericUserResponse{
+		Data: &model.FetchAllUsersResult{
+			Users: result,
+		},
+		Error: nil,
+	}
+}

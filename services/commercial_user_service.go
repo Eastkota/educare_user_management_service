@@ -6,6 +6,7 @@ import (
 
 	"fmt"
 	"context"
+	"time"
 
 	"gorm.io/gorm"
 	"github.com/google/uuid"
@@ -79,6 +80,9 @@ func (vs *UserService) FetchAllUsers() ([]model.CommercialUser, error) {
 
 func (vs *UserService) FetchAllActiveUsers() ([]model.CommercialUser, error) {
 	return vs.Repository.FetchAllActiveUsers()
+}
+func (vs *UserService) FetchNewRegister(from_date, to_date time.Time) ([]model.CommercialUser, error) {
+	return vs.Repository.FetchNewRegister(from_date, to_date)
 }
 
 

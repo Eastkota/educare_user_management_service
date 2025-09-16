@@ -4,6 +4,7 @@ import (
 	"user_management_service/model"
 
 	"context"
+	"time"
 
 	"gorm.io/gorm"
 	"github.com/google/uuid"
@@ -21,4 +22,5 @@ type Services interface {
 	FetchProfileByUserId(ctx context.Context, userID uuid.UUID) (*model.UserProfile, error)
 	FetchAllUsers() ([]model.CommercialUser, error)
 	FetchAllActiveUsers() ([]model.CommercialUser, error)
+	FetchNewRegister(from_date, to_date time.Time) ([]model.CommercialUser, error)
 }
