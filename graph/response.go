@@ -11,8 +11,8 @@ var checkForExistingCommercialUser = graphql.NewObject(graphql.ObjectConfig{
 	},
 })
 
-var SingleUserResponse = graphql.NewObject(graphql.ObjectConfig{
-	Name: "SingleUserResponse",
+var SingleCommercialUserResponse = graphql.NewObject(graphql.ObjectConfig{
+	Name: "SingleCommercialUserResponse",
 	Fields: graphql.Fields{
 		"data":  &graphql.Field{Type: CmsUserResult},
 		"error": &graphql.Field{Type: CommercialAuthError},

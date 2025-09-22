@@ -55,7 +55,7 @@ func NewQueryType(resolver *resolvers.UserResolver) *graphql.Object {
 				},
 			},
 			"fetchCommercialUser": &graphql.Field{
-				Type: SingleUserResponse,
+				Type: SingleCommercialUserResponse,
 				Args: graphql.FieldConfigArgument{
 					"user_id": &graphql.ArgumentConfig{
 						Type: scalar.UUID,
