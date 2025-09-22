@@ -6,7 +6,7 @@ import "github.com/graphql-go/graphql"
 var CheckForExistingUserResponse = graphql.NewObject(graphql.ObjectConfig{
 	Name: "CheckForExistingUserResponse",
 	Fields: graphql.Fields{
-		"data":  &graphql.Field{Type: ExistUser},
+		"data":  &graphql.Field{Type: CmsExistUser},
 		"error": &graphql.Field{Type: AuthError},
 	},
 })
@@ -14,7 +14,7 @@ var CheckForExistingUserResponse = graphql.NewObject(graphql.ObjectConfig{
 var SingleUserResponse = graphql.NewObject(graphql.ObjectConfig{
 	Name: "SingleUserResponse",
 	Fields: graphql.Fields{
-		"data":  &graphql.Field{Type: UserResult},
+		"data":  &graphql.Field{Type: CmsUserResult},
 		"error": &graphql.Field{Type: AuthError},
 	},
 })
@@ -29,7 +29,7 @@ var UsersResponse = graphql.NewObject(graphql.ObjectConfig{
 var UserProfileResponse = graphql.NewObject(graphql.ObjectConfig{
 	Name: "UserProfileResponse",
 	Fields: graphql.Fields{
-		"data":  &graphql.Field{Type: UserProfileResult},
+		"data":  &graphql.Field{Type: CmsUserProfileResult},
 		"error": &graphql.Field{Type: UserError},
 	},
 })

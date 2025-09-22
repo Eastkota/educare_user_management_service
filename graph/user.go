@@ -7,8 +7,8 @@ import (
 )
 
 // Define UserType
-var User = graphql.NewObject(graphql.ObjectConfig{
-	Name: "User",
+var CmsUser = graphql.NewObject(graphql.ObjectConfig{
+	Name: "CmsUser",
 	Fields: graphql.Fields{
 		"id":              &graphql.Field{Type: scalar.UUID},
 		"user_identifier": &graphql.Field{Type: graphql.String},
@@ -21,8 +21,8 @@ var User = graphql.NewObject(graphql.ObjectConfig{
 })
 
 // Define UserType
-var UserProfile = graphql.NewObject(graphql.ObjectConfig{
-	Name: "AuthUserProfile",
+var CmsUserProfile = graphql.NewObject(graphql.ObjectConfig{
+	Name: "CmsUserProfile",
 	Fields: graphql.Fields{
 		"id":                         &graphql.Field{Type: scalar.UUID},
 		"name":                       &graphql.Field{Type: graphql.String},
@@ -34,24 +34,24 @@ var UserProfile = graphql.NewObject(graphql.ObjectConfig{
 })
 
 
-var ExistUser = graphql.NewObject(graphql.ObjectConfig{
-	Name: "ExistUser",
+var CmsExistUser = graphql.NewObject(graphql.ObjectConfig{
+	Name: "CmsExistUser",
 	Fields: graphql.Fields{
 		"exist_user": &graphql.Field{Type: graphql.Boolean},
 		"user_id":    &graphql.Field{Type: scalar.UUID},
 	},
 })
-var UserResult = graphql.NewObject(graphql.ObjectConfig{
-	Name: "UserResult",
+var CmsUserResult = graphql.NewObject(graphql.ObjectConfig{
+	Name: "CmsUserResult",
 	Fields: graphql.Fields{
-		"user": &graphql.Field{Type: User},
+		"user": &graphql.Field{Type: CmsUser},
 	},
 })
 
-var UserProfileResult = graphql.NewObject(graphql.ObjectConfig{
-	Name: "UserProfileResult",
+var CmsUserProfileResult = graphql.NewObject(graphql.ObjectConfig{
+	Name: "CmsUserProfileResult",
 	Fields: graphql.Fields{
-		"user_profile": &graphql.Field{Type: UserProfile},
+		"user_profile": &graphql.Field{Type: CmsUserProfile},
 	},
 })
 
@@ -72,14 +72,14 @@ var GenericUserSuccessData = graphql.NewObject(graphql.ObjectConfig{
 var CommercialUser = graphql.NewObject(graphql.ObjectConfig{
 	Name: "CommercialUser",
 	Fields: graphql.Fields{
-		"user":       &graphql.Field{Type: User},
-		"profile":    &graphql.Field{Type: UserProfile},
+		"user":       &graphql.Field{Type: CmsUser},
+		"profile":    &graphql.Field{Type: CmsUserProfile},
 	},
 })
 var CommercialUserStatus = graphql.NewObject(graphql.ObjectConfig{
 	Name: "CommercialUserStatus",
 	Fields: graphql.Fields{
-		"user":       &graphql.Field{Type: User},
+		"user":       &graphql.Field{Type: CmsUser},
 	},
 })
 
@@ -88,7 +88,7 @@ var FetchAllUsersResult = graphql.NewObject(
         Name: "FetchAllUsersResult",
         Fields: graphql.Fields{
             "users": &graphql.Field{
-                Type: graphql.NewList(User),
+                Type: graphql.NewList(CmsUser),
             },
         },
     },
