@@ -30,7 +30,7 @@ func NewQueryType(resolver *resolvers.UserResolver) *graphql.Object {
 				},
 			},
 			"checkForExistingCommercialUser": &graphql.Field{
-				Type: CheckForExistingUserResponse,
+				Type: checkForExistingCommercialUser,
 				Args: graphql.FieldConfigArgument{
 					"field": &graphql.ArgumentConfig{
 						Type: graphql.String,

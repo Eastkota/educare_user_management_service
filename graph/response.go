@@ -3,8 +3,8 @@ package schema
 import "github.com/graphql-go/graphql"
 
 
-var CheckForExistingUserResponse = graphql.NewObject(graphql.ObjectConfig{
-	Name: "CheckForExistingUserResponse",
+var checkForExistingCommercialUser = graphql.NewObject(graphql.ObjectConfig{
+	Name: "checkForExistingCommercialUser",
 	Fields: graphql.Fields{
 		"data":  &graphql.Field{Type: CmsExistUser},
 		"error": &graphql.Field{Type: AuthError},
