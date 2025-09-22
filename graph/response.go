@@ -43,7 +43,7 @@ var GenericUserResponse = graphql.NewObject(graphql.ObjectConfig{
 })
 
 var CreateUserResponse = graphql.NewObject(graphql.ObjectConfig{
-	Name: "LoginResponse",
+	Name: "CreateUserResponse",
 	Fields: graphql.Fields{
 		"data":  &graphql.Field{Type: CommercialUser},
 		"error": &graphql.Field{Type: CommercialAuthError},
