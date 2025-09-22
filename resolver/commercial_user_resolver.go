@@ -192,9 +192,9 @@ func (ur *UserResolver) UpdateUserStatus(p graphql.ResolveParams) *model.Generic
 	}
 }
 
-func (ar *UserResolver) FetchUser(p graphql.ResolveParams) *model.GenericUserResponse {
+func (ar *UserResolver) FetchCommercialUser(p graphql.ResolveParams) *model.GenericUserResponse {
 	userID := p.Args["user_id"].(uuid.UUID)
-	result, err := ar.Services.FetchUser(userID)
+	result, err := ar.Services.FetchCommercialUser(userID)
 	if err != nil {
 		return helpers.FormatError(err)
 	}

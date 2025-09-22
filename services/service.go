@@ -18,7 +18,7 @@ type Services interface {
 	UpdateUserStatus(ctx context.Context, userID uuid.UUID, status string) (*model.CommercialUser, error)
 	ResetPassword(userID uuid.UUID, password, confirmPassword string) (error)
 
-	FetchUser(userId uuid.UUID) (*model.CommercialUser, error)
+	FetchCommercialUser(userId uuid.UUID) (*model.CommercialUser, error)
 	FetchProfileByUserId(ctx context.Context, userID uuid.UUID) (*model.UserProfile, error)
 	FetchAllUsers() ([]model.CommercialUser, error)
 	FetchAllActiveUsers() ([]model.CommercialUser, error)

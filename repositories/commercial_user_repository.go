@@ -254,7 +254,7 @@ func (repo *UserRepository) UpdateUserStatus(ctx context.Context, userID uuid.UU
 	return &updatedUser, nil
 }
 
-func (repo *UserRepository) FetchUser(userID uuid.UUID) (*model.CommercialUser, error) {
+func (repo *UserRepository) FetchCommercialUser(userID uuid.UUID) (*model.CommercialUser, error) {
     var user model.CommercialUser
     if err := repo.DB.First(&user, "id = ?", userID).Error; err != nil {
         return nil, fmt.Errorf("user not found: %v", err)

@@ -54,7 +54,7 @@ func NewQueryType(resolver *resolvers.UserResolver) *graphql.Object {
 					return resolver.FetchProfileByUserId(p), nil
 				},
 			},
-			"fetchUser": &graphql.Field{
+			"fetchCommercialUser": &graphql.Field{
 				Type: SingleUserResponse,
 				Args: graphql.FieldConfigArgument{
 					"user_id": &graphql.ArgumentConfig{
@@ -62,7 +62,7 @@ func NewQueryType(resolver *resolvers.UserResolver) *graphql.Object {
 					},
 				},
 				Resolve: func(p graphql.ResolveParams) (interface{}, error) {
-					return resolver.FetchUser(p), nil
+					return resolver.FetchCommercialUser(p), nil
 				},
 			},
 			"fetchAllCommercialUsers": &graphql.Field{

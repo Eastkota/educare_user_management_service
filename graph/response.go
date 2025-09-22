@@ -7,7 +7,7 @@ var checkForExistingCommercialUser = graphql.NewObject(graphql.ObjectConfig{
 	Name: "checkForExistingCommercialUser",
 	Fields: graphql.Fields{
 		"data":  &graphql.Field{Type: CmsExistUser},
-		"error": &graphql.Field{Type: AuthError},
+		"error": &graphql.Field{Type: CommercialAuthError},
 	},
 })
 
@@ -15,14 +15,14 @@ var SingleUserResponse = graphql.NewObject(graphql.ObjectConfig{
 	Name: "SingleUserResponse",
 	Fields: graphql.Fields{
 		"data":  &graphql.Field{Type: CmsUserResult},
-		"error": &graphql.Field{Type: AuthError},
+		"error": &graphql.Field{Type: CommercialAuthError},
 	},
 })
 var UsersResponse = graphql.NewObject(graphql.ObjectConfig{
 	Name: "UsersResponse",
 	Fields: graphql.Fields{
 		"data":  &graphql.Field{Type: FetchAllUsersResult},
-		"error": &graphql.Field{Type: AuthError},
+		"error": &graphql.Field{Type: CommercialAuthError},
 	},
 })
 
@@ -46,14 +46,14 @@ var CreateUserResponse = graphql.NewObject(graphql.ObjectConfig{
 	Name: "LoginResponse",
 	Fields: graphql.Fields{
 		"data":  &graphql.Field{Type: CommercialUser},
-		"error": &graphql.Field{Type: AuthError},
+		"error": &graphql.Field{Type: CommercialAuthError},
 	},
 })
 var UserStatusResponse = graphql.NewObject(graphql.ObjectConfig{
 	Name: "UserStatusResponse",
 	Fields: graphql.Fields{
 		"data":  &graphql.Field{Type: CommercialUserStatus},
-		"error": &graphql.Field{Type: AuthError},
+		"error": &graphql.Field{Type: CommercialAuthError},
 	},
 })
 

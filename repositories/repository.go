@@ -19,7 +19,7 @@ type Repository interface {
 	UpdateUserStatus(ctx context.Context, userID uuid.UUID, status string) (*model.CommercialUser, error)
 	ResetPassword(userID uuid.UUID, newPassword string) (error)
 
-	FetchUser(userID uuid.UUID) (*model.CommercialUser, error)
+	FetchCommercialUser(userID uuid.UUID) (*model.CommercialUser, error)
 	FetchProfileByUserId(ctx context.Context, userId uuid.UUID) (*model.UserProfile, error)
 	FetchUserByLoginID(field, value string) (*model.CommercialUser, error)
 	FetchAllUsers() ([]model.CommercialUser, error)

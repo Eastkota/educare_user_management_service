@@ -7,7 +7,7 @@ type GenericAuthSuccessData struct {
 
 type GenericAuthResponse struct {
     Data  interface{} `json:"data,omitempty"`
-    Error *AuthError  `json:"error,omitempty"`
+    Error *CommercialAuthError  `json:"error,omitempty"`
 }
 
 type CreateUserSuccessData struct {
