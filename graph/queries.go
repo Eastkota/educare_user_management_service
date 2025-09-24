@@ -22,7 +22,7 @@ func NewQueryType(resolver *resolvers.UserResolver) *graphql.Object {
 					}
 
 					serviceInfo := model.Service{
-						Name:    "UserManagementService",
+						Name:    "usermanagementservice",
 						Version: "1.0.0",
 						Schema:  helpers.ConvertSchemaToString(schema),
 					}
