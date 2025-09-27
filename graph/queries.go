@@ -68,7 +68,7 @@ func NewQueryType(resolver *resolvers.UserResolver) *graphql.Object {
 			"fetchAllCommercialUsers": &graphql.Field{
 				Type: UsersResponse,
 				Resolve: func(p graphql.ResolveParams) (interface{}, error) {
-					return resolver.FetchAllUsers(p), nil
+					return resolver.FetchAllCommercialUsers(p), nil
 				},
 			},
 			"fetchAllActiveCommercialUsers": &graphql.Field{

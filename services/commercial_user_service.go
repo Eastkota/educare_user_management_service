@@ -74,8 +74,8 @@ func (vs *UserService) FetchCommercialUser(userID uuid.UUID) (*model.CommercialU
 	return vs.Repository.FetchCommercialUser(userID)
 }
 
-func (vs *UserService) FetchAllUsers() ([]model.CommercialUser, error) {
-    return vs.Repository.FetchAllUsers()
+func (vs *UserService) FetchAllCommercialUsers() ([]model.CommercialUser, error) {
+    return vs.Repository.FetchAllCommercialUsers()
 }
 
 func (vs *UserService) FetchAllActiveUsers() ([]model.CommercialUser, error) {

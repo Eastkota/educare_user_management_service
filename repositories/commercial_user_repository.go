@@ -272,7 +272,7 @@ func (repo *UserRepository) FetchAllActiveUsers() ([]model.CommercialUser, error
 
 
 
-func (repo *UserRepository) FetchAllUsers() ([]model.CommercialUser, error) {
+func (repo *UserRepository) FetchAllCommercialUsers() ([]model.CommercialUser, error) {
     var users []model.CommercialUser
     if err := repo.DB.Find(&users).Error; err != nil {
             return nil, fmt.Errorf("failed to fetch users: %v", err) 

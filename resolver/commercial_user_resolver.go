@@ -206,8 +206,8 @@ func (ar *UserResolver) FetchCommercialUser(p graphql.ResolveParams) *model.Gene
 	}
 }
 
-func (ar *UserResolver) FetchAllUsers(p graphql.ResolveParams) *model.GenericUserResponse {
-    result, err := ar.Services.FetchAllUsers()
+func (ar *UserResolver) FetchAllCommercialUsers(p graphql.ResolveParams) *model.GenericUserResponse {
+    result, err := ar.Services.FetchAllCommercialUsers()
     if err != nil {
         return helpers.FormatError(err)
     }

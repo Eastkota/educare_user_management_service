@@ -17,13 +17,13 @@ var SignupInput = graphql.NewInputObject(
 				Type: graphql.String,
 			},
 			"name": &graphql.InputObjectFieldConfig{
-				Type: graphql.NewNonNull(graphql.String),
+				Type: graphql.String,
 			},
 			"gender": &graphql.InputObjectFieldConfig{
 				Type: graphql.String,
 			},
 			"password": &graphql.InputObjectFieldConfig{
-				Type: graphql.NewNonNull(graphql.String),
+				Type: graphql.String,
 			},
 		},
 	},
