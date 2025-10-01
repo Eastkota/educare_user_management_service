@@ -23,7 +23,7 @@ type UpdateSingleAuthDataInput struct {
     Password string `json:"password"`
 }
 
-type ResetPasswordInput struct {
+type CommercialResetPasswordInput struct {
     UserId          uuid.UUID `json:"user_id"`
     Password        string    `json:"password"`
     ConfirmPassword string    `json:"confirm_password"`

@@ -66,9 +66,9 @@ var UpdateSingleAuthDataInput = graphql.NewInputObject(
 	},
 )
 
-var ResetPasswordInput = graphql.NewInputObject(
+var CommercialResetPasswordInput = graphql.NewInputObject(
 	graphql.InputObjectConfig{
-		Name: "ResetPasswordInput",
+		Name: "CommercialResetPasswordInput",
 		Fields: graphql.InputObjectConfigFieldMap{
 			"user_id": &graphql.InputObjectFieldConfig{
 				Type: graphql.NewNonNull(scalar.UUID),
