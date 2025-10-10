@@ -40,7 +40,7 @@ func NewQueryType(resolver *resolvers.UserResolver) *graphql.Object {
 					},
 				},
 				Resolve: func(p graphql.ResolveParams) (interface{}, error) {
-					return resolver.CheckForExistingUser(p), nil
+					return AuthMiddleware(resolver.CheckForExistingUser)(p), nil
 				},
 			},
 			"fetchProfileByCommercialUserId": &graphql.Field{
@@ -51,7 +51,7 @@ func NewQueryType(resolver *resolvers.UserResolver) *graphql.Object {
 					},
 				},
 				Resolve: func(p graphql.ResolveParams) (interface{}, error) {
-					return resolver.FetchProfileByUserId(p), nil
+					return AuthMiddleware(resolver.FetchProfileByUserId)(p), nil
 				},
 			},
 			"fetchCommercialUser": &graphql.Field{
@@ -62,19 +62,19 @@ func NewQueryType(resolver *resolvers.UserResolver) *graphql.Object {
 					},
 				},
 				Resolve: func(p graphql.ResolveParams) (interface{}, error) {
-					return resolver.FetchCommercialUser(p), nil
+					return AuthMiddleware(resolver.FetchCommercialUser)(p), nil
 				},
 			},
 			"fetchAllCommercialUsers": &graphql.Field{
 				Type: UsersResponse,
 				Resolve: func(p graphql.ResolveParams) (interface{}, error) {
-					return resolver.FetchAllCommercialUsers(p), nil
+					return AuthMiddleware(resolver.FetchAllCommercialUsers)(p), nil
 				},
 			},
 			"fetchAllActiveCommercialUsers": &graphql.Field{
 				Type: UsersResponse,
 				Resolve: func(p graphql.ResolveParams) (interface{}, error) {
-					return resolver.FetchAllActiveUsers(p), nil
+					return AuthMiddleware(resolver.FetchAllActiveUsers)(p), nil
 				},
 			},
 			"fetchCommercialNewRegister": &graphql.Field{
@@ -88,7 +88,7 @@ func NewQueryType(resolver *resolvers.UserResolver) *graphql.Object {
 					},
 				},
 				Resolve: func(p graphql.ResolveParams) (interface{}, error) {
-					return resolver.FetchNewRegister(p), nil
+					return AuthMiddleware(resolver.FetchNewRegister)(p), nil
 				},
 			},
 		},

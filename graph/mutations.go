@@ -19,7 +19,7 @@ func NewMutationType(resolver *resolvers.UserResolver) *graphql.Object {
 					},
 				},
 				Resolve: func(p graphql.ResolveParams) (interface{}, error) {
-					return resolver.CreateCommercialUser(p), nil
+					return AuthMiddleware(resolver.CreateCommercialUser)(p), nil
 				},
 			},
 			"createUserProfile": &graphql.Field{
@@ -30,7 +30,7 @@ func NewMutationType(resolver *resolvers.UserResolver) *graphql.Object {
 					},
 				},
 				Resolve: func(p graphql.ResolveParams) (interface{}, error) {
-					return resolver.CreateUserProfile(p), nil
+					return AuthMiddleware(resolver.CreateUserProfile)(p), nil
 				},
 			},
 			"updateCommercialUser": &graphql.Field{
@@ -44,7 +44,7 @@ func NewMutationType(resolver *resolvers.UserResolver) *graphql.Object {
 					},
 				},
 				Resolve: func(p graphql.ResolveParams) (interface{}, error) {
-					return resolver.UpdateCommercialUser(p), nil
+					return AuthMiddleware(resolver.UpdateCommercialUser)(p), nil
 				},
 			},
 			"updateCommercialUserStatus" : &graphql.Field{
@@ -58,7 +58,7 @@ func NewMutationType(resolver *resolvers.UserResolver) *graphql.Object {
 					},
 				},
 				Resolve: func(p graphql.ResolveParams) (interface{}, error) {
-					return resolver.UpdateUserStatus(p), nil
+					return AuthMiddleware(resolver.UpdateUserStatus)(p), nil
 				},
 			},
 			"resetCommercialPassword": &graphql.Field{
@@ -75,7 +75,7 @@ func NewMutationType(resolver *resolvers.UserResolver) *graphql.Object {
 					},
 				},
 				Resolve: func(p graphql.ResolveParams) (interface{}, error) {
-					return resolver.ResetPassword(p), nil
+					return AuthMiddleware(resolver.ResetPassword)(p), nil
 				},
 			},
 		},
