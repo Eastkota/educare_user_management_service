@@ -21,9 +21,44 @@ func ValidateToken(tokenStr string) (*model.User, error) {
 						email
 						id
 						mobile_no
+						name
 						status
 						updated_at
 						user_identifier
+						roles {
+							description
+							id
+							name
+							permissions {
+								created_at
+								id
+								role_id
+								updated_at
+								action {
+									action
+									created_at
+									id
+									name
+									updated_at
+									resource {
+										created_at
+										display
+										id
+										menu
+										name
+										updated_at
+										module {
+											created_at
+											display
+											id
+											menu
+											name
+											updated_at
+										}
+									}
+								}
+							}
+						}
 					}
 				}
 				error {

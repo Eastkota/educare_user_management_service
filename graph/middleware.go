@@ -44,3 +44,44 @@ func AuthMiddleware(next func(p graphql.ResolveParams) *model.GenericUserRespons
         return next(p)
     }
 }
+
+func PermissionMiddleware(actionName string, next func(p graphql.ResolveParams) *model.GenericUserResponse) func(p graphql.ResolveParams) *model.GenericUserResponse {
+    return func(p graphql.ResolveParams) *model.GenericUserResponse {
+        ctx := p.Context
+        user := ctx.Value("user")
+        if user == nil {
+            return helpers.FormatError(fmt.Errorf("UnAuthorized"))
+        }
+
+        userData := user.(*model.User)
+        hasPermission := false
+
+        for _, role := range userData.Roles {
+            if role.Name == "super admin" {
+                hasPermission = true
+                break
+            }
+        }
+
+        if !hasPermission {
+            for _, role := range userData.Roles {
+                for _, permission := range role.Permissions {
+                    if permission.Action.Action == actionName {
+                        hasPermission = true
+                        break 
+                    }
+                }
+                if hasPermission {
+                    break
+                }
+            }
+        }
+
+        if !hasPermission {
+            fmt.Println("User does not have permission for action:", actionName)
+            return helpers.FormatError(fmt.Errorf("UnAuthorized"))
+        }
+
+        return next(p)
+    }
+}
