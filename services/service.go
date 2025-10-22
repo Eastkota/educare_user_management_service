@@ -20,7 +20,7 @@ type Services interface {
 
 	FetchCommercialUser(userId uuid.UUID) (*model.CommercialUser, error)
 	FetchProfileByUserId(ctx context.Context, userID uuid.UUID) (*model.UserProfile, error)
-	FetchAllCommercialUsers() ([]model.CommercialUser, error)
-	FetchAllActiveUsers() ([]model.CommercialUser, error)
+	FetchAllCommercialUsers(limit, offset int) ([]model.CommercialUser, int, error)
+	FetchAllActiveUsers(limit, offset int) ([]model.CommercialUser, int, error)
 	FetchNewRegister(from_date, to_date time.Time) ([]model.CommercialUser, error)
 }

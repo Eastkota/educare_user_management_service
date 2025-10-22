@@ -74,12 +74,12 @@ func (vs *UserService) FetchCommercialUser(userID uuid.UUID) (*model.CommercialU
 	return vs.Repository.FetchCommercialUser(userID)
 }
 
-func (vs *UserService) FetchAllCommercialUsers() ([]model.CommercialUser, error) {
-    return vs.Repository.FetchAllCommercialUsers()
+func (vs *UserService) FetchAllCommercialUsers(limit, offset int) ([]model.CommercialUser, int, error) {
+    return vs.Repository.FetchAllCommercialUsers(limit, offset)
 }
 
-func (vs *UserService) FetchAllActiveUsers() ([]model.CommercialUser, error) {
-	return vs.Repository.FetchAllActiveUsers()
+func (vs *UserService) FetchAllActiveUsers(limit, offset int) ([]model.CommercialUser, int, error) {
+	return vs.Repository.FetchAllActiveUsers(limit, offset)
 }
 func (vs *UserService) FetchNewRegister(from_date, to_date time.Time) ([]model.CommercialUser, error) {
 	return vs.Repository.FetchNewRegister(from_date, to_date)

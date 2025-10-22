@@ -262,22 +262,36 @@ func (repo *UserRepository) FetchCommercialUser(userID uuid.UUID) (*model.Commer
     return &user, nil
 }
 
-func (repo *UserRepository) FetchAllActiveUsers() ([]model.CommercialUser, error) {
+func (repo *UserRepository) FetchAllActiveUsers(limit, offset int) ([]model.CommercialUser, int, error) {
     var users []model.CommercialUser
-    if err := repo.DB.Where("status = ?", "Active").Find(&users).Error; err != nil {
-        return nil, fmt.Errorf("failed to fetch active users: %v", err)
+    if err := repo.DB.Where("status = ?", "Active").Limit(limit).Offset(offset).Find(&users).Error; err != nil {
+        return nil, 0, fmt.Errorf("failed to fetch active users: %v", err)
     }
-    return users, nil
+
+    var totalCount int64
+    if err := repo.DB.Model(&model.CommercialUser{}).Where("status = ?", "Active").Count(&totalCount).Error; err != nil {
+        return nil, 0, fmt.Errorf("failed to count active users: %v", err)
+    }
+
+    return users, int(totalCount), nil
 }
 
 
 
-func (repo *UserRepository) FetchAllCommercialUsers() ([]model.CommercialUser, error) {
+func (repo *UserRepository) FetchAllCommercialUsers(limit, offset int) ([]model.CommercialUser, int, error) {
     var users []model.CommercialUser
-    if err := repo.DB.Find(&users).Error; err != nil {
-            return nil, fmt.Errorf("failed to fetch users: %v", err) 
+    var totalCount int64
+
+    if err := repo.DB.Model(&model.CommercialUser{}).Count(&totalCount).Error; err != nil {
+        return nil, 0, fmt.Errorf("failed to count users: %v", err)
     }
-    return users, nil
+
+    db := repo.DB.Limit(limit).Offset(offset)
+    if err := db.Find(&users).Error; err != nil {
+        return nil, 0, fmt.Errorf("failed to fetch users: %v", err) 
+    }
+
+    return users, int(totalCount), nil
 }
 
 func (repo *UserRepository) ResetPassword(userID uuid.UUID, newPassword string) error {

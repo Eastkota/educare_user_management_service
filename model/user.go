@@ -33,7 +33,8 @@ type UserResult struct {
 }
 
 type FetchAllUsersResult struct {
-    Users []CommercialUser `json:"user"`
+    Users     []CommercialUser `json:"user"`
+    Pagination *UserPagination   `json:"pagination"`
 }
 
 type UserProfile struct {
@@ -61,4 +62,10 @@ type UserVideoPlaylist struct {
 
 func (UserVideoPlaylist) TableName() string {
     return "user_data.video_playlists"
+}
+
+type UserPagination struct {
+	CurrentPage int `json:"current_page"`
+	TotalPage   int `json:"total_page"`
+	Limit       int `json:"limit"`
 }

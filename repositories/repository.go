@@ -22,7 +22,7 @@ type Repository interface {
 	FetchCommercialUser(userID uuid.UUID) (*model.CommercialUser, error)
 	FetchProfileByUserId(ctx context.Context, userId uuid.UUID) (*model.UserProfile, error)
 	FetchUserByLoginID(field, value string) (*model.CommercialUser, error)
-	FetchAllCommercialUsers() ([]model.CommercialUser, error)
-	FetchAllActiveUsers() ([]model.CommercialUser, error)
+	FetchAllCommercialUsers(limit, offset int) ([]model.CommercialUser, int, error)
+	FetchAllActiveUsers(limit, offset int) ([]model.CommercialUser, int, error)
 	FetchNewRegister(from_date, to_date time.Time) ([]model.CommercialUser, error)
 }

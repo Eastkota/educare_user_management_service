@@ -22,6 +22,7 @@ type FetchSingleUserResult struct {
 }
 type FetchAllActiveUsersResult struct {
     Users       []CommercialUser              `json:"users"`
+    Pagination *UserPagination   `json:"pagination"`
 }
 
 type GenericUserResponse struct {

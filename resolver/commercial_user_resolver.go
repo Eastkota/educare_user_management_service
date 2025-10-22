@@ -8,9 +8,10 @@ import (
 	"encoding/json"
 	"fmt"
 	"time"
-
+	
 	"github.com/graphql-go/graphql"
 	"github.com/google/uuid"
+	"github.com/mitchellh/mapstructure"
 )
 
 type UserResolver struct {
@@ -207,26 +208,60 @@ func (ar *UserResolver) FetchCommercialUser(p graphql.ResolveParams) *model.Gene
 }
 
 func (ar *UserResolver) FetchAllCommercialUsers(p graphql.ResolveParams) *model.GenericUserResponse {
-    result, err := ar.Services.FetchAllCommercialUsers()
+    input := model.FetchUsersInput{}
+    if err := mapstructure.Decode(p.Args, &input); err != nil {
+    }
+    
+    if input.Limit == 0 {
+        input.Limit = 50
+    }
+
+    result, totalCount, err := ar.Services.FetchAllCommercialUsers(input.Limit, input.Offset)
     if err != nil {
         return helpers.FormatError(err)
     }
+
+    totalPages := (totalCount + input.Limit - 1) / input.Limit
+
     return &model.GenericUserResponse{
         Data: &model.FetchAllUsersResult{
             Users: result,
+            Pagination: &model.UserPagination{
+                CurrentPage: (input.Offset / input.Limit) + 1,
+                TotalPage:   totalPages,
+                Limit:       input.Limit,
+            },
         },
         Error: nil,
     }
 }
 
 func (ar *UserResolver) FetchAllActiveUsers(p graphql.ResolveParams) *model.GenericUserResponse {
-    result, err := ar.Services.FetchAllActiveUsers()
+    limit, ok := p.Args["limit"].(int)
+    if !ok {
+        limit = 50
+    }
+
+    offset, ok := p.Args["offset"].(int)
+    if !ok {
+        offset = 0
+    }
+
+	result, totalCount, err := ar.Services.FetchAllActiveUsers(limit, offset)
     if err != nil {
         return helpers.FormatError(err)
     }
+
+	totalPages := (totalCount + limit - 1) / limit
+
     return &model.GenericUserResponse{
         Data: &model.FetchAllActiveUsersResult{
             Users: result,
+            Pagination: &model.UserPagination{
+                CurrentPage: (offset / limit) + 1,
+                TotalPage:   totalPages,
+                Limit:       limit,
+            },
         },
         Error: nil,
     }
