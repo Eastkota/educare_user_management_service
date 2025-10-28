@@ -22,6 +22,8 @@ type CommercialUser struct {
     Status         string    `gorm:"type:varchar(50);default:active;not null" json:"status"`
     CreatedAt      time.Time `json:"created_at"`
     UpdatedAt      time.Time `json:"updated_at"`
+
+    UserProfile    *UserProfile `gorm:"foreignKey:UserId;references:ID" json:"user_profile"`
 }
 
 func (CommercialUser) TableName() string {
@@ -45,6 +47,8 @@ type UserProfile struct {
     UserId                  uuid.UUID `gorm:"type:uuid" json:"user_id"`
     CreatedAt               time.Time `json:"created_at"`
     UpdatedAt               time.Time `json:"updated_at"`
+
+    User *CommercialUser `gorm:"foreignKey:UserId;references:ID" json:"user"` 
 }
 
 func (UserProfile) TableName() string {

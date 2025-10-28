@@ -17,6 +17,8 @@ var CmsUser = graphql.NewObject(graphql.ObjectConfig{
 		"status":          &graphql.Field{Type: graphql.String},
 		"created_at":      &graphql.Field{Type: scalar.Time},
 		"updated_at":      &graphql.Field{Type: scalar.Time},
+
+		"user_profile":	   &graphql.Field{Type: CmsUserProfile},
 	},
 })
 

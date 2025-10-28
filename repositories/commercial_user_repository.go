@@ -256,7 +256,7 @@ func (repo *UserRepository) UpdateUserStatus(ctx context.Context, userID uuid.UU
 
 func (repo *UserRepository) FetchCommercialUser(userID uuid.UUID) (*model.CommercialUser, error) {
     var user model.CommercialUser
-    if err := repo.DB.First(&user, "id = ?", userID).Error; err != nil {
+    if err := repo.DB.First(&user, "id = ?", userID).Preload("UserProfile").Error; err != nil {
         return nil, fmt.Errorf("user not found: %v", err)
     }
     return &user, nil
@@ -264,7 +264,10 @@ func (repo *UserRepository) FetchCommercialUser(userID uuid.UUID) (*model.Commer
 
 func (repo *UserRepository) FetchAllActiveUsers(limit, offset int) ([]model.CommercialUser, int, error) {
     var users []model.CommercialUser
-    if err := repo.DB.Where("status = ?", "Active").Limit(limit).Offset(offset).Find(&users).Error; err != nil {
+    if err := repo.DB.Where("status = ?", "Active").
+    Preload("UserProfile").
+    Limit(limit).Offset(offset).
+    Find(&users).Error; err != nil {
         return nil, 0, fmt.Errorf("failed to fetch active users: %v", err)
     }
 
@@ -286,7 +289,7 @@ func (repo *UserRepository) FetchAllCommercialUsers(limit, offset int) ([]model.
         return nil, 0, fmt.Errorf("failed to count users: %v", err)
     }
 
-    db := repo.DB.Limit(limit).Offset(offset)
+    db := repo.DB.Preload("UserProfile").Limit(limit).Offset(offset)
     if err := db.Find(&users).Error; err != nil {
         return nil, 0, fmt.Errorf("failed to fetch users: %v", err) 
     }
