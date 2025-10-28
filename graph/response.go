@@ -57,4 +57,21 @@ var UserStatusResponse = graphql.NewObject(graphql.ObjectConfig{
 	},
 })
 
+var UserTotalsResponse = graphql.NewObject(graphql.ObjectConfig{
+    Name: "UserTotalsResponse",
+    Fields: graphql.Fields{
+        "data": &graphql.Field{
+            Type: graphql.NewObject(graphql.ObjectConfig{
+                Name: "UserTotalsData",
+                Fields: graphql.Fields{
+                    "total_all":    &graphql.Field{Type: graphql.Int},
+                    "total_active": &graphql.Field{Type: graphql.Int},
+                    "total_new":    &graphql.Field{Type: graphql.Int},
+                },
+            }),
+        },
+        "error": &graphql.Field{Type: graphql.String},
+    },
+})
+
 

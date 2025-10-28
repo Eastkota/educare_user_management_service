@@ -111,6 +111,20 @@ func NewQueryType(resolver *resolvers.UserResolver) *graphql.Object {
 					return AuthMiddleware(PermissionMiddleware("list", resolver.FetchNewRegister))(p), nil
 				},
 			},
+			"getCommercialUserTotals": &graphql.Field{
+                Type: UserTotalsResponse,
+                Args: graphql.FieldConfigArgument{
+                    "from_date": &graphql.ArgumentConfig{
+                        Type: scalar.Time,
+                    },
+                    "to_date": &graphql.ArgumentConfig{
+                        Type: scalar.Time,
+                    },
+                },
+                Resolve: func(p graphql.ResolveParams) (interface{}, error) {
+                    return AuthMiddleware(PermissionMiddleware("list", resolver.GetCommercialUserTotals))(p), nil
+                },
+            },
 		},
 	})
 }

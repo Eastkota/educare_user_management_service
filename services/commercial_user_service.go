@@ -85,6 +85,12 @@ func (vs *UserService) FetchNewRegister(from_date, to_date time.Time) ([]model.C
 	return vs.Repository.FetchNewRegister(from_date, to_date)
 }
 
+func (vs *UserService) GetCommercialUserTotals(fromDate, toDate *time.Time) (totalAll int, totalActive int, totalNew int, err error) {
+	return vs.Repository.GetCommercialUserTotals(fromDate, toDate)
+}
+
+
+
 
 func (vs *UserService) ResetPassword(userID uuid.UUID, password, confirmPassword string) error {
     if password == "" || confirmPassword == "" {

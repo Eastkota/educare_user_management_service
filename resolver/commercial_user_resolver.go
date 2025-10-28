@@ -305,3 +305,37 @@ func (ar *UserResolver) FetchNewRegister(p graphql.ResolveParams) *model.Generic
 		Error: nil,
 	}
 }
+
+func (ar *UserResolver) GetCommercialUserTotals(p graphql.ResolveParams) *model.GenericUserResponse {
+    var fromDate *time.Time
+    if val, ok := p.Args["from_date"]; ok && val != nil {
+        if t, ok := val.(time.Time); ok {
+            fromDate = &t
+        } else {
+            return helpers.FormatError(fmt.Errorf("from_date argument is not a valid time.Time type"))
+        }
+    }
+    
+    var toDate *time.Time
+    if val, ok := p.Args["to_date"]; ok && val != nil {
+        if t, ok := val.(time.Time); ok {
+            toDate = &t
+        } else {
+            return helpers.FormatError(fmt.Errorf("to_date argument is not a valid time.Time type"))
+        }
+    }
+
+    totalAll, totalActive, totalNew, err := ar.Services.GetCommercialUserTotals(fromDate, toDate)
+    if err != nil {
+        return helpers.FormatError(err)
+    }
+
+    return &model.GenericUserResponse{
+        Data: map[string]interface{}{
+            "total_all":    totalAll,
+            "total_active": totalActive,
+            "total_new":    totalNew,
+        },
+        Error: nil,
+    }
+}

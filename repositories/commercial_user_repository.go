@@ -330,3 +330,23 @@ func (repo *UserRepository) FetchNewRegister(from_date, to_date time.Time) ([]mo
     }
     return users, nil
 }
+
+func (repo *UserRepository) GetCommercialUserTotals(fromDate, toDate *time.Time) (totalAll int, totalActive int, totalNew int, err error) {
+    var totalAllCount int64
+    var totalActiveCount int64
+    var totalNewCount int64
+
+    if err := repo.DB.Model(&model.CommercialUser{}).Count(&totalAllCount).Error; err != nil {
+        return 0, 0, 0, fmt.Errorf("failed to count total users: %w", err)
+    }
+
+    if err := repo.DB.Model(&model.CommercialUser{}).Where("status = ?", "Active").Count(&totalActiveCount).Error; err != nil {
+        return 0, 0, 0, fmt.Errorf("failed to count active users: %w", err)
+    }
+
+    if err := repo.DB.Model(&model.CommercialUser{}).Where("created_at BETWEEN ? AND ?", fromDate, toDate).Count(&totalNewCount).Error; err != nil {
+        return 0, 0, 0, fmt.Errorf("failed to count new registrations: %w", err)
+    }
+
+    return int(totalAllCount), int(totalActiveCount), int(totalNewCount), nil
+}
