@@ -125,6 +125,22 @@ func NewQueryType(resolver *resolvers.UserResolver) *graphql.Object {
                     return AuthMiddleware(PermissionMiddleware("list", resolver.GetCommercialUserTotals))(p), nil
                 },
             },
+			"getUserActivity": &graphql.Field{
+				Type: UserActivityResponse,
+				Args: graphql.FieldConfigArgument{
+					"limit": &graphql.ArgumentConfig{
+						Type: graphql.Int,
+						Description: "Maximum number of users to fetch per request.",
+					},
+					"offset": &graphql.ArgumentConfig{
+						Type: graphql.Int,
+						Description: "The number of users to skip before starting to return results.",
+					},
+				},
+				Resolve: func(p graphql.ResolveParams) (interface{}, error) {
+					return AuthMiddleware(PermissionMiddleware("list", resolver.GetUserActivity))(p), nil
+				},
+			},
 		},
 	})
 }

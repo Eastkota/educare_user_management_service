@@ -34,4 +34,8 @@ type UserProfileResult struct {
 	UserProfile *UserProfile `json:"user_profile"`
 }
 
+type UserActivityResult struct{
+    UserActivities  []UserActivity `json:"user_activity"`    
+}
+
 

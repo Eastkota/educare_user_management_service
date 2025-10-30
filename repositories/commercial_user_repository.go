@@ -350,3 +350,23 @@ func (repo *UserRepository) GetCommercialUserTotals(fromDate, toDate *time.Time)
 
     return int(totalAllCount), int(totalActiveCount), int(totalNewCount), nil
 }
+
+func (repo *UserRepository) GetUserActivity(offset, limit int) ([]model.UserActivity, error) {
+    var results []model.UserActivity
+
+    // Build query
+    err := repo.DB.
+        Model(&model.UserActivity{}).
+        Select("user_id, COUNT(*) as count").
+        Group("user_id").
+        Offset(offset).
+        Limit(limit).
+        Preload("User"). // load related user
+        Find(&results).Error
+
+    if err != nil {
+        return nil, err
+    }
+
+    return results, nil
+}

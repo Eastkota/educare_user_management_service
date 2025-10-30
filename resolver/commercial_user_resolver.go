@@ -339,3 +339,24 @@ func (ar *UserResolver) GetCommercialUserTotals(p graphql.ResolveParams) *model.
         Error: nil,
     }
 }
+
+func (ar *UserResolver) GetUserActivity(p graphql.ResolveParams) *model.GenericUserResponse {
+    offset, _ := p.Args["offset"].(int)
+    limit, _ := p.Args["limit"].(int)
+    if limit == 0 {
+        limit = 20 
+    }
+
+    activities, err := ar.Services.GetUserActivity(offset, limit)
+    if err != nil {
+            return helpers.FormatError(fmt.Errorf("failed to fetch user activity: %v", err))
+        }
+
+    return &model.GenericUserResponse{
+        Data: &model.UserActivityResult{
+            UserActivities: activities,
+        },
+        Error: nil,
+    }
+}
+

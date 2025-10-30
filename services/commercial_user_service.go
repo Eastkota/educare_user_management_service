@@ -89,8 +89,9 @@ func (vs *UserService) GetCommercialUserTotals(fromDate, toDate *time.Time) (tot
 	return vs.Repository.GetCommercialUserTotals(fromDate, toDate)
 }
 
-
-
+func (vs *UserService) GetUserActivity(offset, limit int) ([]model.UserActivity, error) {
+	return vs.Repository.GetUserActivity(offset, limit)
+}
 
 func (vs *UserService) ResetPassword(userID uuid.UUID, password, confirmPassword string) error {
     if password == "" || confirmPassword == "" {

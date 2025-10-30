@@ -35,6 +35,20 @@ var CmsUserProfile = graphql.NewObject(graphql.ObjectConfig{
 	},
 })
 
+var UserActivity = graphql.NewObject(graphql.ObjectConfig{
+	Name: "UserActivity",
+	Fields: graphql.Fields{
+		"id":                         &graphql.Field{Type: scalar.UUID},
+		"activity":                       &graphql.Field{Type: graphql.String},
+		"user_id":                         &graphql.Field{Type: scalar.UUID},
+		"count":                     &graphql.Field{Type: graphql.Int},
+		"created_at":                 &graphql.Field{Type: scalar.Time},
+		"updated_at":                 &graphql.Field{Type: scalar.Time},
+
+		"user":						&graphql.Field{Type: CmsUser},
+	},
+})
+
 
 var CmsExistUser = graphql.NewObject(graphql.ObjectConfig{
 	Name: "CmsExistUser",
@@ -95,3 +109,5 @@ var FetchAllUsersResult = graphql.NewObject(
         },
     },
 )
+
+

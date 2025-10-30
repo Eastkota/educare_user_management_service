@@ -73,3 +73,16 @@ type UserPagination struct {
 	TotalPage   int `json:"total_page"`
 	Limit       int `json:"limit"`
 }
+
+type UserActivity struct {
+    ID  uuid.UUID   `gorm:"type:uuid;primaryKey" json:"id"`
+    Activity string `gorm:"type:varchar" json:"activity"`
+    UserID  uuid.UUID `gorm:"type:uuid" json:"user_id"`
+    Count   int     `json:"count"`
+
+    User    *CommercialUser   `gorm:"foreignKey:UserID;references:ID" json:"user"`
+}
+
+func (UserActivity) TableName() string {
+    return "auth.user_activities"
+}

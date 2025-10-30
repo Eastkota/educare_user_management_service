@@ -74,4 +74,19 @@ var UserTotalsResponse = graphql.NewObject(graphql.ObjectConfig{
     },
 })
 
+var UserActivityResponse = graphql.NewObject(graphql.ObjectConfig{
+	Name: "UserActivityResponse",
+	Fields: graphql.Fields{
+		"data":  &graphql.Field{Type: UserActivityResultType},
+		"error": &graphql.Field{Type: CommercialAuthError},
+	},
+})
+
+var UserActivityResultType = graphql.NewObject(graphql.ObjectConfig{
+	Name: "UserActivityResultType",
+	Fields: graphql.Fields{
+		"user_activity": &graphql.Field{Type: graphql.NewList(UserActivity)},
+	},
+})
+
 
