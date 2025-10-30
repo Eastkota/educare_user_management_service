@@ -361,7 +361,8 @@ func (repo *UserRepository) GetUserActivity(offset, limit int) ([]model.UserActi
         Group("user_id").
         Offset(offset).
         Limit(limit).
-        Preload("User"). // load related user
+        Preload("User").
+        Preload("User.UserProfile").
         Find(&results).Error
 
     if err != nil {
