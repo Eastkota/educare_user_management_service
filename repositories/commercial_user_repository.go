@@ -340,7 +340,11 @@ func (repo *UserRepository) GetCommercialUserTotals(fromDate, toDate *time.Time)
         return 0, 0, 0, fmt.Errorf("failed to count total users: %w", err)
     }
 
-    if err := repo.DB.Model(&model.CommercialUser{}).Where("status = ?", "Active").Count(&totalActiveCount).Error; err != nil {
+    if err := repo.DB.Model(&model.UserActivity{}).
+        Select("user_id").
+        Group("user_id").
+        Having("COUNT(*) > ?", 1).
+        Count(&totalActiveCount).Error; err != nil {
         return 0, 0, 0, fmt.Errorf("failed to count active users: %w", err)
     }
 
