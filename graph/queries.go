@@ -122,7 +122,7 @@ func NewQueryType(resolver *resolvers.UserResolver) *graphql.Object {
                     },
                 },
                 Resolve: func(p graphql.ResolveParams) (interface{}, error) {
-                    return AuthMiddleware(PermissionMiddleware("list", resolver.GetCommercialUserTotals))(p), nil
+                    return resolver.GetCommercialUserTotals(p), nil
                 },
             },
 			"getUserActivity": &graphql.Field{

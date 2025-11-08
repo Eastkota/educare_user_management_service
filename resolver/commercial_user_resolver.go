@@ -325,7 +325,7 @@ func (ar *UserResolver) GetCommercialUserTotals(p graphql.ResolveParams) *model.
         }
     }
 
-    totalAll, totalActive, totalNew, err := ar.Services.GetCommercialUserTotals(fromDate, toDate)
+    totalAll, totalActive, totalNew, totalInActive, err := ar.Services.GetCommercialUserTotals(fromDate, toDate)
     if err != nil {
         return helpers.FormatError(err)
     }
@@ -335,6 +335,7 @@ func (ar *UserResolver) GetCommercialUserTotals(p graphql.ResolveParams) *model.
             "total_all":    totalAll,
             "total_active": totalActive,
             "total_new":    totalNew,
+            "total_inactive":  totalInActive,
         },
         Error: nil,
     }

@@ -85,7 +85,7 @@ func (vs *UserService) FetchNewRegister(from_date, to_date time.Time) ([]model.C
 	return vs.Repository.FetchNewRegister(from_date, to_date)
 }
 
-func (vs *UserService) GetCommercialUserTotals(fromDate, toDate *time.Time) (totalAll int, totalActive int, totalNew int, err error) {
+func (vs *UserService) GetCommercialUserTotals(fromDate, toDate *time.Time) (totalAll int, totalActive int, totalInActive,totalNew int, err error) {
 	return vs.Repository.GetCommercialUserTotals(fromDate, toDate)
 }
 
