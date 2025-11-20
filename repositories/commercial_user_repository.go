@@ -337,24 +337,27 @@ func (repo *UserRepository) GetCommercialUserTotals(fromDate, toDate *time.Time)
     var totalInActiveCount int64
     var totalNewCount int64
 
-    if err := repo.DB.Model(&model.CommercialUser{}).Count(&totalAllCount).Error; err != nil {
-        return 0, 0, 0, 0,fmt.Errorf("failed to count total users: %w", err)
+    query := repo.DB.Model(&model.CommercialUser{})
+    if fromDate != nil && toDate != nil {
+        query = query.Where("created_at BETWEEN ? AND ?", fromDate, toDate)
+    }
+    if err := query.Count(&totalAllCount).Error; err != nil {
+        return 0, 0, 0, 0, fmt.Errorf("failed to count total users: %w", err)
     }
 
-    if err := repo.DB.Model(&model.UserActivity{}).
+    activeQuery := repo.DB.Model(&model.UserActivity{}).
         Select("user_id").
-        Group("user_id").
-        Having("COUNT(*) > ?", 1).
-        Count(&totalInActiveCount).Error; err != nil {
-        return 0, 0, 0, 0,fmt.Errorf("failed to count active users: %w", err)
+        Group("user_id")
+    if fromDate != nil && toDate != nil {
+        activeQuery = activeQuery.Where("created_at BETWEEN ? AND ?", fromDate, toDate)
+    }
+    if err := activeQuery.Count(&totalActiveCount).Error; err != nil {
+        return 0, 0, 0, 0, fmt.Errorf("failed to count active users: %w", err)
     }
 
-    if err := repo.DB.Model(&model.UserActivity{}).
-        Select("user_id").
-        Group("user_id").
-        Having("COUNT(*) < ?", 1).
-        Count(&totalActiveCount).Error; err != nil {
-        return 0, 0, 0, 0,fmt.Errorf("failed to count inactive users: %w", err)
+    totalInActiveCount = totalAllCount - totalActiveCount
+    if totalInActiveCount < 0 {
+        totalInActiveCount = 0
     }
 
     if err := repo.DB.Model(&model.CommercialUser{}).Where("created_at BETWEEN ? AND ?", fromDate, toDate).Count(&totalNewCount).Error; err != nil {
