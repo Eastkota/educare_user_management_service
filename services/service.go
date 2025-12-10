@@ -24,5 +24,5 @@ type Services interface {
 	FetchAllActiveUsers(limit, offset int) ([]model.CommercialUser, int, error)
 	FetchNewRegister(from_date, to_date time.Time) ([]model.CommercialUser, error)
 	GetCommercialUserTotals(fromDate, toDate *time.Time) (totalAll int, totalActive int, totalInActive, totalNew int, err error)
-	GetUserActivity(offset, limit int) ([]model.UserActivity, error)
+	GetUserActivity(offset, limit int) ([]model.AggregatedUserActivity, error)
 }

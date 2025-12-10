@@ -89,7 +89,7 @@ func (vs *UserService) GetCommercialUserTotals(fromDate, toDate *time.Time) (tot
 	return vs.Repository.GetCommercialUserTotals(fromDate, toDate)
 }
 
-func (vs *UserService) GetUserActivity(offset, limit int) ([]model.UserActivity, error) {
+func (vs *UserService) GetUserActivity(offset, limit int) ([]model.AggregatedUserActivity, error) {
 	return vs.Repository.GetUserActivity(offset, limit)
 }
 
