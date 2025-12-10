@@ -138,8 +138,7 @@ func NewQueryType(resolver *resolvers.UserResolver) *graphql.Object {
 					},
 				},
 				Resolve: func(p graphql.ResolveParams) (interface{}, error) {
-					// return AuthMiddleware(PermissionMiddleware("list", resolver.GetUserActivity))(p), nil
-					return resolver.GetUserActivity(p), nil
+					return AuthMiddleware(PermissionMiddleware("list", resolver.GetUserActivity))(p), nil
 				},
 			},
 		},
