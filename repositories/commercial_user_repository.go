@@ -405,6 +405,10 @@ func (repo *UserRepository) GetUserActivity(offset, limit int) ([]model.Aggregat
         Limit(limit).
         Preload("User").
         Preload("User.UserProfile").
+        Preload("User.UserProfile.School").
+        Preload("User.UserProfile.Grade").
+        Preload("User.UserProfile.Eccd").
+        Preload("User.UserProfile.Dzongkhag").
         Find(&results).Error
 
     if err != nil {
