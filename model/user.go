@@ -78,23 +78,24 @@ type UserActivity struct {
     ID  uuid.UUID   `gorm:"type:uuid;primaryKey" json:"id"`
     Activity string `gorm:"type:varchar" json:"activity"`
     UserID  uuid.UUID `gorm:"type:uuid" json:"user_id"`
-    Count   int     `json:"count"`
-
-    User    *CommercialUser   `gorm:"foreignKey:UserID;references:ID" json:"user"`
+	Count   int     `json:"count" gorm:"type:integer"`
+    Month           int         `json:"month" gorm:"type:integer"`             
+    Year            int         `json:"year" gorm:"type:integer"`      
+    
+    User            *CommercialUser   `json:"user"`              
 }
 
 func (UserActivity) TableName() string {
     return "auth.user_activities"
 }
 
-type AggregatedUserActivity struct {
-    UserID          uuid.UUID   `json:"user_id" gorm:"column:user_id"`
-    Month           int         `json:"month" gorm:"column:month"`             
-    Year            int         `json:"year" gorm:"column:year"`              
-    
-    // These names MUST match the AS aliases in your SQL SELECT statement
-    VideoWatchCount int64       `json:"video_watch_count" gorm:"column:video_watch_count"` 
-    OtherCount      int64       `json:"other_count" gorm:"column:other_count"`       
-    
-    User            *CommercialUser   `json:"user"`              
+type ActivityCounts map[string]int
+
+type GroupedUserActivity struct {
+    UserID          uuid.UUID       `json:"user_id"`
+    Month           int             `json:"month"`
+    Year            int             `json:"year"`
+    ActivityCounts  ActivityCounts  `json:"activity_counts"` // Contains {"video watched": 10, "others": 12}
+    TotalCount      int             `json:"total_count"`     // Sum of all counts (e.g., 22)
+    User            *CommercialUser `json:"user"`            // The preloaded user details
 }

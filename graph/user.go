@@ -38,16 +38,37 @@ var CmsUserProfile = graphql.NewObject(graphql.ObjectConfig{
 var UserActivity = graphql.NewObject(graphql.ObjectConfig{
 	Name: "UserActivity",
 	Fields: graphql.Fields{
-		"user_id":           &graphql.Field{Type: scalar.UUID},
-        "month":             &graphql.Field{Type: graphql.Int},    
-        "year":              &graphql.Field{Type: graphql.Int},    
-        
-        // Add the two pivoted fields
-        "video_watch_count": &graphql.Field{Type: graphql.Int}, // New
-        "other_count":       &graphql.Field{Type: graphql.Int}, // New
+		"id":         &graphql.Field{Type: scalar.UUID},
+		"user_id":    &graphql.Field{Type: scalar.UUID},
+		"activity":  &graphql.Field{Type: graphql.String},
+		"created_at": &graphql.Field{Type: scalar.Time},
+		"updated_at": &graphql.Field{Type: scalar.Time},
+		"count":      &graphql.Field{Type: graphql.Int},
+		"month":      &graphql.Field{Type: graphql.Int},
+		"year":       &graphql.Field{Type: graphql.Int},
         
         "user":              &graphql.Field{Type: CmsUser},
 	},
+})
+
+var ActivityCounts = graphql.NewObject(graphql.ObjectConfig{
+    Name: "ActivityCounts",
+    Fields: graphql.Fields{
+        "video_watched": &graphql.Field{Type:graphql.Int},
+        "others": &graphql.Field{Type:graphql.Int},
+    },
+})
+
+var GroupedUserActivity = graphql.NewObject(graphql.ObjectConfig{
+    Name: "GroupedUserActivity",
+    Fields: graphql.Fields{
+        "user_id":       &graphql.Field{Type: scalar.UUID},
+        "month":         &graphql.Field{Type: graphql.Int},
+        "year":          &graphql.Field{Type: graphql.Int}, 
+        "activity_counts": &graphql.Field{Type: ActivityCounts},
+        "total_count": &graphql.Field{Type:graphql.Int},
+        "user":          &graphql.Field{Type: CmsUser},
+    },
 })
 
 

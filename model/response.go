@@ -35,7 +35,7 @@ type UserProfileResult struct {
 }
 
 type UserActivityResult struct{
-    UserActivities  []AggregatedUserActivity `json:"user_activity"`    
+    UserActivities  []GroupedUserActivity `json:"grouped_user_activities"`    
 }
 
 

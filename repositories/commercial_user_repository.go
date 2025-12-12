@@ -367,49 +367,28 @@ func (repo *UserRepository) GetCommercialUserTotals(fromDate, toDate *time.Time)
     return int(totalAllCount), int(totalActiveCount), int(totalNewCount), int(totalInActiveCount), nil
 }
 
-func (repo *UserRepository) GetUserActivity(offset, limit int) ([]model.AggregatedUserActivity, error) {
-    var results []model.AggregatedUserActivity
-
-    // --- 2. Use SUM(CASE WHEN ...) for Pivoting ---
-    selects := fmt.Sprintf(`
-        user_id,
-        EXTRACT(MONTH FROM created_at) AS month,
-        EXTRACT(YEAR FROM created_at) AS year,
-
-        -- Pivot: Calculate Video Watch Count
-        SUM(CASE
-            WHEN activity ILIKE '%%Video%%' THEN 1
-            ELSE 0
-        END) AS video_watch_count,
-
-        -- Pivot: Calculate Other Count
-        SUM(CASE
-            WHEN activity ILIKE '%%Video%%' THEN 0
-            ELSE 1
-        END) AS other_count
-    `)
-
-    // --- 3. Group only by User, Month, and Year ---
-    groupByFields := `
-        user_id,
-        month,
-        year
-    `
-
-    err := repo.DB.
-        Model(&model.UserActivity{}).
-        Select(selects).
-        Group(groupByFields).
-        Order("user_id, year, month"). // Optional: Add ordering for clarity
-        Offset(offset).
-        Limit(limit).
-        Preload("User").
-        Preload("User.UserProfile").
-        Find(&results).Error
-
-    if err != nil {
-        return nil, err
+func (repo *UserRepository) GetUserActivity(offset, limit int) ([]model.UserActivity, error) {
+    var userActivities []model.UserActivity
+    
+    var userIDs []uuid.UUID
+    if err := repo.DB.Model(&model.UserActivity{}).
+        Select("DISTINCT user_id").
+        Order("user_id").
+        Offset(offset).Limit(limit).
+        Find(&userIDs).Error; err != nil {
+        return nil, fmt.Errorf("failed to fetch distinct user ids: %v", err)
     }
 
-    return results, nil
+    if len(userIDs) == 0 {
+        return []model.UserActivity{}, nil
+    }
+    if err := repo.DB.
+        Preload("User").
+        Preload("User.UserProfile").
+        Where("user_id IN (?)", userIDs).
+        Find(&userActivities).Error; err != nil {
+        return nil, fmt.Errorf("failed to fetch user activities: %v", err)
+    }
+    
+    return userActivities, nil
 }

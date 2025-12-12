@@ -78,15 +78,18 @@ var UserTotalsResponse = graphql.NewObject(graphql.ObjectConfig{
 var UserActivityResponse = graphql.NewObject(graphql.ObjectConfig{
 	Name: "UserActivityResponse",
 	Fields: graphql.Fields{
-		"data":  &graphql.Field{Type: UserActivityResultType},
+		"data":  &graphql.Field{Type: UserActivityResult},
 		"error": &graphql.Field{Type: CommercialAuthError},
 	},
 })
 
-var UserActivityResultType = graphql.NewObject(graphql.ObjectConfig{
-	Name: "UserActivityResultType",
+var UserActivityResult = graphql.NewObject(graphql.ObjectConfig{
+	Name: "UserActivityResult",
 	Fields: graphql.Fields{
-		"user_activity": &graphql.Field{Type: graphql.NewList(UserActivity)},
+		"grouped_user_activities": &graphql.Field{
+            Type: graphql.NewList(GroupedUserActivity), // Use the NEW Grouped type
+            Description: "A list of user activities, grouped by user.",
+        },
 	},
 })
 

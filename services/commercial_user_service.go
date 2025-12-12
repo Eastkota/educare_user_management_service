@@ -88,9 +88,38 @@ func (vs *UserService) FetchNewRegister(from_date, to_date time.Time) ([]model.C
 func (vs *UserService) GetCommercialUserTotals(fromDate, toDate *time.Time) (totalAll int, totalActive int, totalInActive,totalNew int, err error) {
 	return vs.Repository.GetCommercialUserTotals(fromDate, toDate)
 }
-
-func (vs *UserService) GetUserActivity(offset, limit int) ([]model.AggregatedUserActivity, error) {
-	return vs.Repository.GetUserActivity(offset, limit)
+func (vs *UserService) GetUserActivity(offset, limit int) ([]model.GroupedUserActivity, error) {
+    rawActivities, err := vs.Repository.GetUserActivity(offset, limit)
+    if err != nil {
+        return nil, err
+    }
+    
+    groupedMap := make(map[uuid.UUID]*model.GroupedUserActivity)
+    
+    for _, activity := range rawActivities {
+        userID := activity.UserID
+        
+        if _, exists := groupedMap[userID]; !exists {
+            groupedMap[userID] = &model.GroupedUserActivity{
+                UserID:          userID,
+                User:            activity.User,
+                Month:           activity.Month,
+                Year:            activity.Year,
+                ActivityCounts:  make(model.ActivityCounts),
+                TotalCount:      0,
+            }
+        }
+        
+        groupedMap[userID].ActivityCounts[activity.Activity] += activity.Count
+        groupedMap[userID].TotalCount += activity.Count
+    }
+    
+    groupedActivities := make([]model.GroupedUserActivity, 0, len(groupedMap))
+    for _, group := range groupedMap {
+        groupedActivities = append(groupedActivities, *group)
+    }
+    
+    return groupedActivities, nil
 }
 
 func (vs *UserService) ResetPassword(userID uuid.UUID, password, confirmPassword string) error {
@@ -101,8 +130,6 @@ func (vs *UserService) ResetPassword(userID uuid.UUID, password, confirmPassword
         return fmt.Errorf("new password and confirm password do not match")
     }
 
-    // Call the new, dedicated repository function.
-    // The repository handles the hashing and database logic.
     err := vs.Repository.ResetPassword(userID, password)
     if err != nil {
         return fmt.Errorf("failed to reset password: %v", err)
