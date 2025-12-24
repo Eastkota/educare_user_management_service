@@ -75,7 +75,7 @@ type UserPagination struct {
 }
 
 type UserActivity struct {
-    ID  uuid.UUID   `gorm:"type:uuid;primaryKey" json:"id"`
+    ID          uuid.UUID   `gorm:"type:uuid;primaryKey" json:"id"`
     Activity string `gorm:"type:varchar" json:"activity"`
     UserID  uuid.UUID `gorm:"type:uuid" json:"user_id"`
 	Count   int     `json:"count" gorm:"type:integer"`

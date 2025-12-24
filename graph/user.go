@@ -56,6 +56,7 @@ var ActivityCounts = graphql.NewObject(graphql.ObjectConfig{
     Fields: graphql.Fields{
         "video_watched": &graphql.Field{Type:graphql.Int},
         "others": &graphql.Field{Type:graphql.Int},
+		"CheyChey": &graphql.Field{Type:graphql.Int},
     },
 })
 
