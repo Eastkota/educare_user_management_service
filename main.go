@@ -39,7 +39,10 @@ func main() {
 
 	e := echo.New()
 	e.Use(middleware.CORSWithConfig(middleware.CORSConfig{
-		AllowOrigins: []string{"http://localhost:3000"}, // Add any origins you need
+		AllowOrigins: []string{
+			"http://localhost:3000", 
+			"https://www.educareskill.com/",
+		},
 		AllowMethods: []string{echo.GET, echo.POST, echo.PUT, echo.DELETE, echo.OPTIONS},
 		AllowHeaders: []string{"Origin", "Content-Type", "Accept", "Authorization"},
 	}))
